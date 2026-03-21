@@ -9,3 +9,40 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
+
+.font-bodoni {
+    font-family: 'Bodoni Moda', serif;
+}
+
+.font-cinzel {
+    font-family: 'Cinzel Decorative', serif;
+}
+
+.text-champagne {
+    color: #FAEBD7;
+}
+
+.text-goldenrod {
+    color: #DAA520;
+}
+
+.text-tidewater {
+    color: #2F4F4F;
+}
+
+.bg-tidewater {
+    background-color: #2F4F4F;
+}
+
+.bg-goldenrod {
+    background-color: #DAA520;
+}
+
+.bg-esmeralda {
+    background-color: #1a1a1a;
+}
+
+.border-goldenrod {
+    border-color: #DAA520;
+}
+

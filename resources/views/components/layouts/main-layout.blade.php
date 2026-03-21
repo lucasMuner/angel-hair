@@ -24,6 +24,8 @@
         <main class="flex-1 h-screen overflow-y-auto">
             {{ $slot }}
         </main>
+
         @livewireScripts
+
     </body>
 </html>
