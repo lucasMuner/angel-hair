@@ -66,9 +66,8 @@ class ClientModal extends Component
 
     public function save()
     {
-        $this->validate();
-
         try {
+            $this->validate($this->rules(), $this->messages());
             $data = [
                 'name' => $this->name,
                 'email' => $this->email,
