@@ -21,9 +21,8 @@ class UserService {
 
     }
 
-    public function updateClientEmployee (array $data, Client $client): User
+    public function updateClientEmployee (array $data, User $user): User
     {
-        $user = $client->user;
         $user->name = $data['name'];
         $user->email = $data['email'];
         $user->username = str_replace(' ', '', strtolower($data['name']));

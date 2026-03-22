@@ -85,8 +85,6 @@ class ClientModal extends Component
 
             $this->dispatch('alert', type: 'success', message: $message);
             $this->dispatch('refreshClientsList');
-
-            $this->cleanFields();
             $this->closeModal();
 
         } catch (\Exception $e) {
@@ -105,8 +103,6 @@ class ClientModal extends Component
 
             $this->dispatch('alert', type: 'success', message: 'Cliente excluído com sucesso!');
             $this->dispatch('refreshClientsList');
-
-            $this->cleanFields();
             $this->closeModal();
 
         } catch (\Exception $e) {

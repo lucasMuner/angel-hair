@@ -2,13 +2,13 @@
 
 namespace App\Services;
 
-use App\Models\Client;
+use App\Models\Employee;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Services\UserService;
 
-class ClientService
+class EmployeeService
 {
 
     protected UserService $userService;
@@ -19,28 +19,28 @@ class ClientService
     }
 
     /**
-     * Create new client
+     * Create new employee
      */
-    public function store(array $data): Client
+    public function store(array $data): Employee
     {
         DB::beginTransaction();
         try {
             // Create User
             $user = $this->userService->storeClientEmployee($data);
 
-            // Create Client
-            $client = new Client();
-            $client->user_id = $user->id;
-            $client->phone = $data['phone'];
-            $client->saveWithLog();
+            // Create Employee
+            $employee = new Employee();
+            $employee->user_id = $user->id;
+            $employee->phone = $data['phone'];
+            $employee->saveWithLog();
 
             DB::commit();
 
-            return $client;
+            return $employee;
 
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error('Erro ao criar cliente', [
+            Log::error('Erro ao criar funcionário', [
                 'error' => $e->getMessage(),
                 'data' => $data
             ]);
@@ -51,27 +51,27 @@ class ClientService
     /**
      * Update client
      */
-    public function update(int $clientId, array $data): Client
+    public function update(int $employeeId, array $data): Employee
     {
         DB::beginTransaction();
         try {
-            $client = Client::with('user')->findOrFail($clientId);
+            $employee = Employee::with('user')->findOrFail($employeeId);
 
             // Update User
-            $this->userService->updateClientEmployee($data, $client->user);
+            $this->userService->updateClientEmployee($data, $employee->user);
 
-            // Update Client
-            $client->phone = $data['phone'];
-            $client->saveWithLog();
+            // Update Employee
+            $employee->phone = $data['phone'];
+            $employee->saveWithLog();
 
             DB::commit();
 
-            return $client->fresh();
+            return $employee->fresh();
 
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error('Erro ao atualizar cliente', [
-                'client_id' => $clientId,
+            Log::error('Erro ao atualizar funcionário', [
+                'employee_id' => $employeeId,
                 'error' => $e->getMessage(),
                 'data' => $data
             ]);
@@ -80,17 +80,17 @@ class ClientService
     }
 
     /**
-     * Delete client
+     * Delete employee
      */
-    public function delete(int $clientId): bool
+    public function delete(int $employeeId): bool
     {
         DB::beginTransaction();
         try {
-            $client = Client::with('user')->findOrFail($clientId);
-            $user = $client->user;
+            $employee = Employee::with('user')->findOrFail($employeeId);
+            $user = $employee->user;
 
-            // Delete Client
-            $client->deleteWithLog();
+            // Delete Employee
+            $employee->deleteWithLog();
 
             // Delete User
             if ($user) {
@@ -102,8 +102,8 @@ class ClientService
 
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error('Erro ao deletar cliente', [
-                'client_id' => $clientId,
+            Log::error('Erro ao deletar funcionário', [
+                'employee_id' => $employeeId,
                 'error' => $e->getMessage()
             ]);
             throw $e;
@@ -111,19 +111,19 @@ class ClientService
     }
 
     /**
-     * Search clients by id
+     * Search employees by id
      */
-    public function find(int $clientId): ?Client
+    public function find(int $employeeId): ?Employee
     {
-        return Client::with('user')->find($clientId);
+        return Employee::with('user')->find($employeeId);
     }
 
     /**
-     * List all clients with their associated user data
+     * List all employees with their associated user data
      */
     public function all()
     {
-        return Client::with('user')->latest()->get();
+        return Employee::with('user')->latest()->get();
     }
 
     /**
