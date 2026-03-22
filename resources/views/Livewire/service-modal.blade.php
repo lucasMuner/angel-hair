@@ -1,5 +1,5 @@
 <div
-    x-data="{ show: false }"
+    x-data="{ show: @entangle('showModal') }"
     x-on:open-service-modal.window="show = true"
 >
     <div
@@ -24,35 +24,75 @@
             class="rounded-lg w-full max-w-md p-6 bg-[#2F4F4F] border border-[#DAA520]"
         >
             <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold text-goldenrod font-bodoni text-gray-800">Adicionar Serviço</h3>
-                <button @click="show = false" class="text-gray-500 hover:text-gray-700">
+                <h3 class="text-xl font-bold text-goldenrod font-bodoni text-gray-800">{{ $isEditing ? 'Editar' : 'Adicionar' }} Serviço</h3>
+                <button @click="$wire.closeModal()" class="text-gray-500 hover:text-gray-700">
                     <i class="fa-solid fa-times text-xl"></i>
                 </button>
             </div>
 
-            <form>
+            <form wire:submit.prevent="save">
                 <div class="mb-4">
-                    <x-input-field label="Nome" id="name" name="name" placeholder="Digite o nome do serviço" />
+                    <x-input-field label="Nome" id="name" name="name" wire:model="name" placeholder="Digite o nome do serviço" />
                 </div>
 
                 <div class="mb-4">
-                    <x-input-field label="Descrição" id="description" name="description" placeholder="Digite a descrição do serviço" />
+                    <x-input-field label="Descrição" id="description" wire:model="description" name="description" placeholder="Digite a descrição do serviço" />
                 </div>
 
                 <div class="mb-4">
-                    <x-input-field label="Preço" id="price" name="price" type="number" step="0.01" placeholder="Digite o preço do serviço" />
+                    <x-input-field label="Preço" id="price" name="price" wire:model="price" type="number" step="0.01" placeholder="Digite o preço do serviço" />
                 </div>
 
-                <div class="flex justify-end space-x-2">
-                    <button type="button"
-                            @click="show = false"
-                            class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition">
-                        Cancelar
-                    </button>
-                    <button type="submit"
-                            class="px-4 py-2 bg-goldenrod text-white rounded-md hover:bg-goldenrod-dark transition">
-                        Salvar
-                    </button>
+                <div class="flex justify-between items-center space-x-2">
+                    @if($isEditing)
+                        <button
+                            type="button"
+                            @click="
+                                Swal.fire({
+                                    title: 'Tem certeza?',
+                                    text: 'Essa ação não pode ser desfeita!',
+                                    icon: 'warning',
+                                    showCancelButton: true,
+                                    confirmButtonColor: '#DAA520',
+                                    cancelButtonColor: '#d33',
+                                    confirmButtonText: 'Sim, excluir!',
+                                    cancelButtonText: 'Cancelar'
+                                }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            $wire.delete();
+                                        }
+                                });
+                            "
+                            class="cursor-pointer px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition"
+                        >
+                            <i class="fa-solid fa-trash"></i> Excluir
+                        </button>
+                    @endif
+
+                    <div class="flex-1"></div>
+
+                    <div class="flex space-x-2">
+                        <button
+                            type="button"
+                            @click="$wire.closeModal()"
+                            class="cursor-pointer px-4 py-2 bg-gray-600 text-champagne rounded-md hover:bg-gray-700 transition"
+                        >
+                            Cancelar
+                        </button>
+                        <button
+                            type="submit"
+                            class="cursor-pointer px-4 py-2 bg-goldenrod text-white rounded-md hover:bg-goldenrod-dark transition"
+                            wire:loading.attr="disabled"
+                        >
+                            <span wire:loading.remove>
+                                {{ $isEditing ? 'Atualizar' : 'Salvar' }}
+                            </span>
+                            <span wire:loading>
+                                <i class="fa-solid fa-spinner fa-spin"></i>
+                                {{ $isEditing ? 'Atualizando...' : 'Salvando...' }}
+                            </span>
+                        </button>
+                    </div>
                 </div>
             </form>
         </div>

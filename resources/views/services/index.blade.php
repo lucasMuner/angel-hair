@@ -15,13 +15,20 @@
         </button>
     </div>
 
-   <div class="grid grid-cols-4 md:grid-cols-4 lg:grid-cols-4 gap-6 mx-4 mb-8">
-        <x-services-card service="Corte de Cabelo" description="Corte de cabelo profissional" price="50.00" />
-        <x-services-card service="Pintura de Cabelo" description="Pintura de cabelo com produtos de qualidade" price="80.00" />
-        <x-services-card service="Tratamento Capilar" description="Tratamento capilar para restaurar a saúde dos fios" price="100.00" />
-        <x-services-card service="Design de Sobrancelha" description="Design de sobrancelha para realçar o rosto" price="30.00" />
-    </div>
+    <livewire:services-list />
 
-    <livewire:service-modal />
+    <div
+        x-data
+        x-on:alert.window="
+            Swal.fire({
+                icon: $event.detail.type,
+                title: $event.detail.type === 'success' ? 'Sucesso!' : 'Erro!',
+                text: $event.detail.message,
+                confirmButtonColor: '#DAA520'
+            })
+        "
+    >
+        <livewire:service-modal />
+    </div>
 
 </x-layouts.main-layout>
