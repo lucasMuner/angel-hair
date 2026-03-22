@@ -24,8 +24,10 @@
             class="rounded-lg w-full max-w-md p-6 bg-[#2F4F4F] border border-[#DAA520]"
         >
             <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold text-goldenrod font-bodoni text-gray-800">Adicionar Cliente</h3>
-                <button @click="$wire.cleanFields()" class="cursor-pointer text-gray-500 hover:text-gray-700">
+                <h3 class="text-xl font-bold text-goldenrod font-bodoni text-gray-800">
+                    {{ $isEditing ? 'Editar Funcionário' : 'Adicionar Funcionário' }}
+                </h3>
+                <button @click="$wire.closeModal()" class="cursor-pointer text-gray-500 hover:text-gray-700">
                     <i class="fa-solid fa-times text-xl"></i>
                 </button>
             </div>
@@ -74,7 +76,7 @@
                     <div class="flex space-x-2">
                         <button
                             type="button"
-                            @click="$wire.cleanFields()"
+                            @click="$wire.closeModal()"
                             class="cursor-pointer px-4 py-2 bg-gray-600 text-champagne rounded-md hover:bg-gray-700 transition"
                         >
                             Cancelar
