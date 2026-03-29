@@ -9,12 +9,6 @@ use App\Services\EmployeeService;
 class EmployeesList extends Component
 {
     public $employees = [];
-    protected EmployeeService $employeeService;
-
-    public function boot(EmployeeService $employeeService)
-    {
-        $this->employeeService = $employeeService;
-    }
 
     public function mount()
     {
@@ -24,7 +18,7 @@ class EmployeesList extends Component
     #[On('refreshEmployeesList')]
     public function loadEmployees()
     {
-        $this->employees = $this->employeeService->all();
+        $this->employees = app(EmployeeService::class)->all();
     }
 
     public function render()

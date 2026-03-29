@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Livewire\Forms\ServiceForm;
 use Livewire\Component;
 use Livewire\Attributes\On;
 use App\Services\ServiceService;
@@ -9,113 +10,84 @@ use Illuminate\Support\Facades\Log;
 
 class ServiceModal extends Component
 {
+
+    public ServiceForm $form;
     public $showModal = false;
     public $serviceId = null;
-    public $name, $description, $price;
     public $isEditing = false;
 
-    protected ServiceService $serviceService;
-
-    public function boot(ServiceService $serviceService)
-    {
-        $this->serviceService = $serviceService;
-    }
-
     #[On('edit-service')]
-    public function editService($id)
+    public function editService($id, ServiceService $service)
     {
-        $service = $this->serviceService->find($id);
-
-        if ($service) {
+        if ($service = $service->find($id)) {
             $this->serviceId = $service->id;
-            $this->name = $service->name;
-            $this->description = $service->description;
-            $this->price = $service->price;
+            $this->form->fill([
+                'serviceId' => $service->id,
+                'name' => $service->name,
+                'description' => $service->description,
+                'price' => $service->price,
+            ]);
             $this->isEditing = true;
             $this->showModal = true;
         }
     }
 
-    protected function rules()
-    {
-        return [
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'price' => 'required|numeric|min:0',
-        ];
-    }
-
-    protected function messages()
-    {
-        return [
-            'name.required' => 'O nome é obrigatório.',
-            'description.string' => 'A descrição deve ser um texto.',
-            'price.required' => 'O preço é obrigatório.',
-            'price.numeric' => 'O preço deve ser um número.',
-            'price.min' => 'O preço deve ser um valor positivo.'
-        ];
-    }
-
-    public function save()
+    public function save(ServiceService $service)
     {
         try {
-            $this->validate($this->rules(), $this->messages());
-            $data = [
-                'name' => $this->name,
-                'description' => $this->description,
-                'price' => $this->price,
-            ];
+            $validatedData = $this->form->validate();
 
             if ($this->isEditing) {
-                $this->serviceService->update($this->serviceId, $data);
+                $service->update($this->serviceId, $validatedData);
                 $message = 'Serviço atualizado com sucesso!';
             } else {
-                $this->serviceService->store($data);
+                $service->store($validatedData);
                 $message = 'Serviço criado com sucesso!';
             }
 
-            $this->dispatch('alert', type: 'success', message: $message);
-            $this->dispatch('refreshServicesList');
-            $this->closeModal();
+            $this->notify($message);
 
         } catch (\Exception $e) {
             $this->dispatch('alert', type: 'error', message: 'Erro: ' . $e->getMessage());
         }
     }
 
-    public function delete()
+    public function delete(ServiceService $service)
     {
         try {
-            if (!$this->isEditing || !$this->serviceId) {
-                throw new \Exception('Serviço não encontrado.');
-            }
+            if (!$this->isEditing || !$this->serviceId) throw new \Exception('Serviço não encontrado.');
 
-            $this->serviceService->delete($this->serviceId);
+            $service->delete($this->serviceId);
 
-            $this->dispatch('alert', type: 'success', message: 'Serviço excluído com sucesso!');
-            $this->dispatch('refreshServicesList');
-            $this->closeModal();
+            $this->notify('Serviço deletado com sucesso!');
 
         } catch (\Exception $e) {
             $this->dispatch('alert', type: 'error', message: 'Erro: ' . $e->getMessage());
         }
+    }
+
+    public function notify($message)
+    {
+        $this->dispatch('alert', type: 'success', message: $message);
+        $this->dispatch('refreshServicesList');
+        $this->closeModal();
     }
 
     public function openModal()
     {
-        $this->isEditing = false;
         $this->showModal = true;
     }
 
     public function closeModal()
     {
-        $this->showModal = false;
         $this->cleanFields();
+        $this->showModal = false;
     }
 
     public function cleanFields()
     {
-        $this->reset();
+        $this->reset(['serviceId', 'isEditing']);
+        $this->form->reset();
     }
 
     public function render()

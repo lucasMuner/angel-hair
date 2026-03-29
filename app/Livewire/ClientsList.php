@@ -9,12 +9,6 @@ use App\Services\ClientService;
 class ClientsList extends Component
 {
     public $clients = [];
-    protected ClientService $clientService;
-
-    public function boot(ClientService $clientService)
-    {
-        $this->clientService = $clientService;
-    }
 
     public function mount()
     {
@@ -24,7 +18,7 @@ class ClientsList extends Component
     #[On('refreshClientsList')]
     public function loadClients()
     {
-        $this->clients = $this->clientService->all();
+        $this->clients = app(ClientService::class)->all();
     }
 
     public function render()
