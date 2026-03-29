@@ -9,12 +9,6 @@ use App\Services\ServiceService;
 class ServicesList extends Component
 {
     public $services = [];
-    protected ServiceService $serviceService;
-
-    public function boot(ServiceService $serviceService)
-    {
-        $this->serviceService = $serviceService;
-    }
 
     public function mount()
     {
@@ -24,7 +18,7 @@ class ServicesList extends Component
     #[On('refreshServicesList')]
     public function loadServices()
     {
-        $this->services = $this->serviceService->all();
+        $this->services = app(ServiceService::class)->all();
     }
 
     public function render()

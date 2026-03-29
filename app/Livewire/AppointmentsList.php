@@ -9,12 +9,6 @@ use App\Services\AppointmentService;
 class AppointmentsList extends Component
 {
     public $appointments = [];
-    protected AppointmentService $appointmentService;
-
-    public function boot(AppointmentService $appointmentService)
-    {
-        $this->appointmentService = $appointmentService;
-    }
 
     public function mount()
     {
@@ -24,7 +18,7 @@ class AppointmentsList extends Component
     #[On('refreshAppointmentsList')]
     public function loadAppointments()
     {
-        $this->appointments = $this->appointmentService->all();
+        $this->appointments = app(AppointmentService::class)->all();
     }
 
     public function render()

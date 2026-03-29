@@ -2,128 +2,98 @@
 
 namespace App\Livewire;
 
+use App\Livewire\Forms\ClientForm;
+use App\Models\Client;
 use Livewire\Component;
 use Livewire\Attributes\On;
 use App\Services\ClientService;
 
 class ClientModal extends Component
 {
+
+    public ClientForm $form;
     public $showModal = false;
     public $clientId = null;
     public $userId = null;
-    public $name, $email, $phone;
     public $isEditing = false;
 
-    protected ClientService $clientService;
-
-    public function boot(ClientService $clientService)
-    {
-        $this->clientService = $clientService;
-    }
-
     #[On('edit-client')]
-    public function editClient($id)
+    public function editClient($id, ClientService $service)
     {
-        $client = $this->clientService->find($id);
-
-        if ($client) {
+        if ($client = $service->find($id)) {
             $this->clientId = $client->id;
-            $this->userId = $client->user_id;
-            $this->name = $client->user->name;
-            $this->email = $client->user->email;
-            $this->phone = $client->phone;
+            $this->form->fill([
+                'userId' => $client->user_id,
+                'name'  => $client->user->name ?? '',
+                'email' => $client->user->email ?? '',
+                'phone'  => \App\Helpers\PhoneHelper::format($client->phone) ?? '',
+            ]);
             $this->isEditing = true;
             $this->showModal = true;
         }
     }
 
-    protected function rules()
-    {
-        return [
-            'name' => 'required|string|max:255',
-            'email' => [
-                'required',
-                'email',
-                'max:255',
-                $this->isEditing
-                    ? 'unique:users,email,' . $this->userId
-                    : 'unique:users,email'
-            ],
-            'phone' => 'required|string|max:20',
-        ];
-    }
-
-    protected function messages()
-    {
-        return [
-            'name.required' => 'O nome é obrigatório.',
-            'email.required' => 'O email é obrigatório.',
-            'email.email' => 'O email deve ser válido.',
-            'email.unique' => 'Este email já está cadastrado.',
-            'phone.required' => 'O telefone é obrigatório.',
-        ];
-    }
-
-    public function save()
+    public function save(ClientService $service)
     {
         try {
-            $this->validate($this->rules(), $this->messages());
-            $data = [
-                'name' => $this->name,
-                'email' => $this->email,
-                'phone' => $this->phone,
-            ];
+            $validatedData = $this->form->validate();
+
+            if (!empty($validatedData['phone'])) {
+                $validatedData['phone'] = \App\Helpers\PhoneHelper::strip($validatedData['phone']);
+            }
 
             if ($this->isEditing) {
-                $this->clientService->update($this->clientId, $data);
+                $service->update($this->clientId, $validatedData);
                 $message = 'Cliente atualizado com sucesso!';
             } else {
-                $this->clientService->store($data);
+                $service->store($validatedData);
                 $message = 'Cliente criado com sucesso!';
             }
 
-            $this->dispatch('alert', type: 'success', message: $message);
-            $this->dispatch('refreshClientsList');
-            $this->closeModal();
+            $this->notify($message);
 
         } catch (\Exception $e) {
             $this->dispatch('alert', type: 'error', message: 'Erro: ' . $e->getMessage());
         }
     }
 
-    public function delete()
+    public function delete(ClientService $service)
     {
         try {
-            if (!$this->isEditing || !$this->clientId) {
-                throw new \Exception('Cliente não encontrado.');
-            }
+            if (!$this->isEditing || !$this->clientId) throw new \Exception('Cliente não encontrado.');
 
-            $this->clientService->delete($this->clientId);
+            $service->delete($this->clientId);
 
-            $this->dispatch('alert', type: 'success', message: 'Cliente excluído com sucesso!');
-            $this->dispatch('refreshClientsList');
-            $this->closeModal();
+            $this->notify('Cliente deletado com sucesso!');
 
         } catch (\Exception $e) {
             $this->dispatch('alert', type: 'error', message: 'Erro: ' . $e->getMessage());
         }
     }
 
+    private function notify($message)
+    {
+        $this->dispatch('alert', type: 'success', message: $message);
+        $this->dispatch('refreshClientsList');
+        $this->closeModal();
+    }
+
+    #[On('open-client-modal')]
     public function openModal()
     {
-        $this->isEditing = false;
         $this->showModal = true;
     }
 
     public function closeModal()
     {
-        $this->showModal = false;
         $this->cleanFields();
+        $this->showModal = false;
     }
 
     public function cleanFields()
     {
-        $this->reset();
+        $this->reset(['clientId', 'userId', 'isEditing']);
+        $this->form->reset();
     }
 
     public function render()
