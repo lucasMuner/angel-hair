@@ -15,7 +15,7 @@
         </button>
     </div>
 
-    <livewire:clients-list />
+    <livewire:client.clients-list />
 
     <div
         x-data
@@ -28,7 +28,7 @@
             })
         "
     >
-        <livewire:client-modal />
+        <livewire:client.client-modal />
     </div>
 
 </x-layouts.main-layout>

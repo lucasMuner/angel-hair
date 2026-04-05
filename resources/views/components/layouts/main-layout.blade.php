@@ -19,7 +19,7 @@
     <body class="bg-[#2F4F4F] flex overflow-hidden">
 
         @if(!Request::is('/'))
-            <x-side-bar :active="$active ?? ''" />
+            <x-ui.side-bar :active="$active ?? ''" />
         @endif
 
         <main class="flex-1 h-screen overflow-y-auto">

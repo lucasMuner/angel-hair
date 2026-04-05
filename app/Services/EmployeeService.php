@@ -2,18 +2,19 @@
 
 namespace App\Services;
 
+use App\Contracts\EmployeeServiceInterface;
+use App\Contracts\UserServiceInterface;
 use App\Models\Employee;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use App\Services\UserService;
 
-class EmployeeService
+class EmployeeService implements EmployeeServiceInterface
 {
 
-    protected UserService $userService;
+    protected UserServiceInterface $userService;
 
-    public function __construct(UserService $userService)
+    public function __construct(UserServiceInterface $userService)
     {
         $this->userService = $userService;
     }
@@ -27,7 +28,7 @@ class EmployeeService
         try {
             // Create User
             $user = $this->userService->storeClientEmployee($data);
-
+            $data['phone'] = \App\Helpers\PhoneHelper::strip($data['phone']);
             // Create Employee
             $employee = new Employee();
             $employee->user_id = $user->id;
@@ -59,7 +60,7 @@ class EmployeeService
 
             // Update User
             $this->userService->updateClientEmployee($data, $employee->user);
-
+            $data['phone'] = \App\Helpers\PhoneHelper::strip($data['phone']);
             // Update Employee
             $employee->phone = $data['phone'];
             $employee->saveWithLog();

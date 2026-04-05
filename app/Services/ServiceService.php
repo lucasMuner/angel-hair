@@ -5,8 +5,9 @@ namespace App\Services;
 use App\Models\Service;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use App\Contracts\ServiceServiceInterface;
 
-class ServiceService
+class ServiceService implements ServiceServiceInterface
 {
 
     /**
