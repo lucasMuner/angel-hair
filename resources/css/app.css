@@ -46,3 +46,26 @@
     border-color: #DAA520;
 }
 
+.translate-x-0 {
+    transform: translateX(0);
+}
+.-translate-x-full {
+    transform: translateX(-100%);
+}
+
+.lg\:translate-x-0 {
+    @media (min-width: 1024px) {
+        transform: translateX(0);
+    }
+}
+
+.bg-goldenrod-10 {
+    background-color: rgba(218, 165, 32, 0.1);
+}
+
+.bg-red-10 {
+    background-color: rgba(255, 107, 107, 0.1);
+}
+
+[x-cloak] { display: none !important; }
+

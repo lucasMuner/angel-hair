@@ -23,7 +23,7 @@
         <h2 class="text-3xl font-bold text-goldenrod text-center mb-8">Visão Geral</h2>
 
         {{-- Estatísticas --}}
-        <div class="grid grid-cols-3 gap-6 mb-10">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 mb-10">
             <div class="rounded-xl hover:-translate-y-2 transition-transform p-6 text-center bg-tidewater" style="background-color: #1a3333; border: 1px solid #DAA520;">
                 <i class="fa-solid fa-calendar-check text-3xl mb-3" style="color: #DAA520;"></i>
                 <p class="text-4xl font-bold text-goldenrod">8</p>
@@ -43,7 +43,7 @@
 
         {{-- Cards de acesso rápido --}}
         <h2 class="text-3xl font-bold text-goldenrod text-center mb-6 mt-4">Acesso Rápido</h2>
-        <div class="grid grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 mb-10">
             <a href="#" class="rounded-xl hover:-translate-y-2 transition-transform p-6 flex items-center gap-4 transition hover:opacity-80 cursor-pointer"
             style="background-color: #1a3333; border: 1px solid #DAA520;">
                 <i class="fa-solid fa-calendar-plus text-3xl" style="color: #DAA520;"></i>
