@@ -4,7 +4,7 @@ namespace App\Livewire\Service;
 
 use Livewire\Component;
 use Livewire\Attributes\On;
-use App\Services\ServiceService;
+use App\Contracts\ServiceServiceInterface;
 
 class ServicesList extends Component
 {
@@ -18,7 +18,7 @@ class ServicesList extends Component
     #[On('refreshServicesList')]
     public function loadServices()
     {
-        $this->services = app(ServiceService::class)->all();
+        $this->services = app(ServiceServiceInterface::class)->all();
     }
 
     public function render()
