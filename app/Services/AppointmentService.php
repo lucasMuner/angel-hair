@@ -2,11 +2,12 @@
 
 namespace App\Services;
 
+use App\Contracts\AppointmentServiceInterface;
 use Illuminate\Support\Facades\DB;
 use App\Models\Appointment;
 use Illuminate\Support\Facades\Log;
 
-class AppointmentService
+class AppointmentService implements AppointmentServiceInterface
 {
     public function store(array $data): Appointment
     {

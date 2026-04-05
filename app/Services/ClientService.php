@@ -2,18 +2,19 @@
 
 namespace App\Services;
 
+use App\Contracts\ClientServiceInterface;
 use App\Models\Client;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use App\Services\UserService;
+use App\Contracts\UserServiceInterface;
 
-class ClientService
+class ClientService implements ClientServiceInterface
 {
 
-    protected UserService $userService;
+    protected UserServiceInterface $userService;
 
-    public function __construct(UserService $userService)
+    public function __construct(UserServiceInterface $userService)
     {
         $this->userService = $userService;
     }
@@ -27,7 +28,7 @@ class ClientService
         try {
             // Create User
             $user = $this->userService->storeClientEmployee($data);
-
+            $data['phone'] = \App\Helpers\PhoneHelper::strip($data['phone']);
             // Create Client
             $client = new Client();
             $client->user_id = $user->id;
@@ -59,7 +60,7 @@ class ClientService
 
             // Update User
             $this->userService->updateClientEmployee($data, $client->user);
-
+            $data['phone'] = \App\Helpers\PhoneHelper::strip($data['phone']);
             // Update Client
             $client->phone = $data['phone'];
             $client->saveWithLog();

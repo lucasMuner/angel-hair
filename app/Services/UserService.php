@@ -6,8 +6,10 @@ use App\Models\Client;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use App\Contracts\UserServiceInterface;
 
-class UserService {
+class UserService implements UserServiceInterface
+{
 
     public function storeClientEmployee (array $data): User
     {

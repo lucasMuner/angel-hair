@@ -37,10 +37,10 @@
             <form method="POST" action="{{ route('login.post') }}">
                 @csrf
                 <div class="mb-4">
-                    <x-input-field label="Usuário" id="username" name="username" />
+                    <x-ui.input-field label="Usuário" id="username" name="username" />
                 </div>
                 <div class="mb-4">
-                    <x-input-field label="Senha" id="password" name="password" type="password" />
+                    <x-ui.input-field label="Senha" id="password" name="password" type="password" />
                 </div>
                 <div>
                     <button type="submit"

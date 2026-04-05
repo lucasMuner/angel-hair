@@ -16,7 +16,7 @@
         </button>
     </div>
 
-   <livewire:appointments-list />
+   <livewire:appointment.appointments-list />
 
     <div
         x-data
@@ -29,6 +29,6 @@
             })
         "
     >
-        <livewire:appointment-modal />
+        <livewire:appointment.appointment-modal />
     </div>
 </x-layouts.main-layout>

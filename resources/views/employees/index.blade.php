@@ -16,7 +16,7 @@
         </button>
    </div>
 
-    <livewire:employees-list />
+    <livewire:employee.employees-list />
 
     <div
         x-data
@@ -29,7 +29,7 @@
             })
         "
     >
-        <livewire:employee-modal />
+        <livewire:employee.employee-modal />
     </div>
 
 </x-layouts.main-layout>

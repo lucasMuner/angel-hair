@@ -15,7 +15,7 @@
         </button>
     </div>
 
-    <livewire:services-list />
+    <livewire:service.services-list />
 
     <div
         x-data
@@ -28,7 +28,7 @@
             })
         "
     >
-        <livewire:service-modal />
+        <livewire:service.service-modal />
     </div>
 
 </x-layouts.main-layout>
