@@ -2,9 +2,9 @@
 
 namespace App\Livewire\Appointment;
 
+use App\Contracts\AppointmentServiceInterface;
 use Livewire\Component;
 use Livewire\Attributes\On;
-use App\Services\AppointmentService;
 
 class AppointmentsList extends Component
 {
@@ -18,7 +18,7 @@ class AppointmentsList extends Component
     #[On('refreshAppointmentsList')]
     public function loadAppointments()
     {
-        $this->appointments = app(AppointmentService::class)->all();
+        $this->appointments = app(AppointmentServiceInterface::class)->all();
     }
 
     public function render()

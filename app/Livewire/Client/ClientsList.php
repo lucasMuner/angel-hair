@@ -2,9 +2,9 @@
 
 namespace App\Livewire\Client;
 
+use App\Contracts\ClientServiceInterface;
 use Livewire\Component;
 use Livewire\Attributes\On;
-use App\Services\ClientService;
 
 class ClientsList extends Component
 {
@@ -18,7 +18,7 @@ class ClientsList extends Component
     #[On('refreshClientsList')]
     public function loadClients()
     {
-        $this->clients = app(ClientService::class)->all();
+        $this->clients = app(ClientServiceInterface::class)->all();
     }
 
     public function render()

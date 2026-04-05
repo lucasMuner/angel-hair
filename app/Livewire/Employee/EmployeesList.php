@@ -4,7 +4,7 @@ namespace App\Livewire\Employee;
 
 use Livewire\Component;
 use Livewire\Attributes\On;
-use App\Services\EmployeeService;
+use App\Contracts\EmployeeServiceInterface;
 
 class EmployeesList extends Component
 {
@@ -18,7 +18,7 @@ class EmployeesList extends Component
     #[On('refreshEmployeesList')]
     public function loadEmployees()
     {
-        $this->employees = app(EmployeeService::class)->all();
+        $this->employees = app(EmployeeServiceInterface::class)->all();
     }
 
     public function render()
