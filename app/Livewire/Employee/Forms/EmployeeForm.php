@@ -12,6 +12,7 @@ class EmployeeForm extends Form
     public $email = '';
     public $phone = '';
     public $userId = null;
+    public $services = [];
 
     protected function rules()
     {
@@ -28,7 +29,9 @@ class EmployeeForm extends Form
                 'max:255',
                 Rule::unique('users', 'email')->ignore($this->userId),
             ],
-            'phone' => 'required|string|max:20'
+            'phone' => 'required|string|max:20',
+            'services' => 'array',
+            'services.*' => 'exists:services,id',
         ];
     }
 
@@ -38,6 +41,7 @@ class EmployeeForm extends Form
             'name' => 'nome',
             'email' => 'email',
             'phone' => 'telefone',
+            'services' => 'serviços',
         ];
     }
 
@@ -48,6 +52,7 @@ class EmployeeForm extends Form
             'email'    => 'O campo :attribute deve ser um endereço válido.',
             'max'      => 'O campo :attribute não pode ter mais que :max caracteres.',
             'unique'   => 'Este :attribute já está em uso em nosso sistema.',
+            'exists'   => 'O :attribute selecionado é inválido.',
         ];
     }
 }

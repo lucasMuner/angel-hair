@@ -34,4 +34,9 @@ abstract class BaseModal extends Component
         $this->dispatch($refreshEvent);
         $this->closeModal();
     }
+
+    protected function dispatchSelect2SetValues(string $id, array $values)
+    {
+        $this->dispatch('select2-set-values', id: $id, values: $values);
+    }
 }
