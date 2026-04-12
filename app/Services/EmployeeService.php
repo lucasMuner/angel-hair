@@ -29,11 +29,16 @@ class EmployeeService implements EmployeeServiceInterface
             // Create User
             $user = $this->userService->storeClientEmployee($data);
             $data['phone'] = \App\Helpers\PhoneHelper::strip($data['phone']);
+
+            $data['services'] = $data['services'] ?? [];
+
             // Create Employee
             $employee = new Employee();
             $employee->user_id = $user->id;
             $employee->phone = $data['phone'];
             $employee->saveWithLog();
+
+            $employee->services()->sync($data['services']);
 
             DB::commit();
 
@@ -65,6 +70,8 @@ class EmployeeService implements EmployeeServiceInterface
             $employee->phone = $data['phone'];
             $employee->saveWithLog();
 
+            $employee->services()->sync($data['services']);
+
             DB::commit();
 
             return $employee->fresh();
@@ -90,6 +97,7 @@ class EmployeeService implements EmployeeServiceInterface
             $employee = Employee::with('user')->findOrFail($employeeId);
             $user = $employee->user;
 
+            $employee->services()->detach();
             // Delete Employee
             $employee->deleteWithLog();
 

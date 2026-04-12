@@ -9,6 +9,7 @@ use App\Contracts\EmployeeServiceInterface;
 use App\Contracts\ServiceServiceInterface;
 use Livewire\Attributes\{Computed, On};
 use App\Livewire\Base\BaseModal;
+use App\Models\Employee;
 
 class AppointmentModal extends BaseModal
 {
@@ -29,13 +30,14 @@ class AppointmentModal extends BaseModal
     #[Computed]
     public function optionsServices()
     {
-        return app(ServiceServiceInterface::class)->all()->pluck('name', 'id')->toArray();
+        if (!$this->form->employee_id) return [];
+        return Employee::find($this->form->employee_id)->services()->pluck('services.name', 'services.id')->toArray();
     }
 
     #[On('open-appointment-modal')]
     public function openModal()
     {
-        $this->cleanFields(); // esse modal limpava no open, mantendo o comportamento
+        $this->cleanFields();
         parent::openModal();
     }
 
@@ -47,6 +49,30 @@ class AppointmentModal extends BaseModal
             $this->form->fill($appointment->toArray());
             $this->isEditing = true;
             $this->showModal = true;
+        }
+    }
+
+    #[On('filter-services')]
+    public function filterServices($employeeId)
+    {
+        $this->form->employee_id = $employeeId;
+        $this->form->service_id = null;
+    }
+
+    #[On('search-availability')]
+    public function searchAvailability(AppointmentServiceInterface $service)
+    {
+        try {
+            $this->form->validateOnly('scheduled_at');
+
+            $this->form->availableTimes = $service->getAvailableTimes(
+                $this->form->employee_id,
+                $this->form->service_id,
+                $this->form->scheduled_at
+            );
+
+        } catch (\Exception $e) {
+            $this->dispatch('alert', type: 'error', message: 'Erro: ' . $e->getMessage());
         }
     }
 

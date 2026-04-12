@@ -30,4 +30,14 @@
             wire:model="form.phone"
         />
     </div>
+
+    <div class="mb-4">
+        <x-ui.select-multiple-field
+            label="Serviços"
+            :options="$this->optionsServices"
+            id="services"
+            name="services"
+            wireModel="form.services"
+        />
+    </div>
 </x-layouts.modal-form>

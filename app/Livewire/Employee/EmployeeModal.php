@@ -4,7 +4,8 @@ namespace App\Livewire\Employee;
 
 use App\Livewire\Employee\Forms\EmployeeForm;
 use App\Contracts\EmployeeServiceInterface;
-use Livewire\Attributes\On;
+use App\Contracts\ServiceServiceInterface;
+use Livewire\Attributes\{On, Computed};
 use App\Livewire\Base\BaseModal;
 
 class EmployeeModal extends BaseModal
@@ -17,6 +18,12 @@ class EmployeeModal extends BaseModal
         parent::openModal();
     }
 
+    #[Computed]
+    public function optionsServices()
+    {
+        return app(ServiceServiceInterface::class)->all()->pluck('name', 'id')->toArray();
+    }
+
     #[On('edit-employee')]
     public function editEmployee($id, EmployeeServiceInterface $service)
     {
@@ -26,10 +33,13 @@ class EmployeeModal extends BaseModal
                 'userId' => $employee->user_id,
                 'name'   => $employee->user->name ?? '',
                 'email'  => $employee->user->email ?? '',
+                'services' => $employee->services->pluck('id')->toArray(),
                 'phone'  => \App\Helpers\PhoneHelper::format($employee->phone) ?? '',
             ]);
             $this->isEditing = true;
             $this->showModal = true;
+
+            $this->dispatchSelect2SetValues('services', $employee->services->pluck('id')->toArray());
         }
     }
 

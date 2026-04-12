@@ -16,11 +16,19 @@ class AppointmentForm extends Form
     #[Validate('required|exists:services,id', as: 'serviço')]
     public $service_id = '';
 
+    #[Validate('required|date', as: 'data')]
+    public $scheduled_at = '';
+
+    public $scheduled_time = '';
+
+    public $availableTimes = [];
+
     protected function messages()
     {
         return [
             'required' => 'O :attribute é obrigatório.',
             'exists' => 'O :attribute selecionado é inválido.',
+            'date' => 'O :attribute deve ser uma data válida.',
         ];
     }
 }
