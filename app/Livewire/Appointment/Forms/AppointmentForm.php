@@ -19,6 +19,7 @@ class AppointmentForm extends Form
     #[Validate('required|date', as: 'data')]
     public $scheduled_at = '';
 
+    #[Validate('required|date_format:H:i', as: 'horário')]
     public $scheduled_time = '';
 
     public $availableTimes = [];

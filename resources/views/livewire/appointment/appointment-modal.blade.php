@@ -50,6 +50,7 @@
 
     <div class="grid grid-cols-1 gap-4 mb-4">
         @if($form->availableTimes)
+            <label class="block font-bodoni text-champagne font-medium mb-2">Horários Disponíveis</label>
             <div class="flex flex-wrap gap-1 mb-4">
                 @foreach ($form->availableTimes as $item)
                     <input
