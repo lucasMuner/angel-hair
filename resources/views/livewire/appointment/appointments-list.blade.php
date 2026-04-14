@@ -4,8 +4,9 @@
             :id="$appointment->id"
             :employee="$appointment->employee->user->name"
             :client="$appointment->client->user->name"
-            :email="$appointment->client->user->email"
-            :phone="$appointment->client->phone"
+            :date="$appointment->date"
+            :start_time="$appointment->start_time"
+            :end_time="$appointment->end_time"
         />
     @empty
         <div class="col-span-4 text-center py-8">

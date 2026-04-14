@@ -72,12 +72,12 @@
                         <button
                             type="submit"
                             class="cursor-pointer px-4 py-2 bg-goldenrod text-white rounded-md hover:bg-goldenrod-dark transition"
-                            wire:loading.attr="disabled"
+                            wire:loading.attr="disabled" wire:target="save"
                         >
-                            <span wire:loading.remove>
+                            <span wire:loading.remove wire:target="save">
                                 {{ $isEditing ? 'Atualizar' : 'Salvar' }}
                             </span>
-                            <span wire:loading>
+                            <span wire:loading wire:target="save">
                                 <i class="fa-solid fa-spinner fa-spin"></i>
                                 {{ $isEditing ? 'Atualizando...' : 'Salvando...' }}
                             </span>
