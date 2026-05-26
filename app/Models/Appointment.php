@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Client;
 use App\Models\Employee;
 use App\Models\Service;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 
 class Appointment extends Model
@@ -28,30 +29,33 @@ class Appointment extends Model
         return $this->belongsTo(Service::class);
     }
 
-    public function getAvailableTimes(int $employeeId, int $serviceId, string $date): array
+    public function getAvailableTimes(int $employeeId, string $date, ?int $excludeId = null): array
     {
-        $existingAppointments = self::where('employee_id', $employeeId)
-            ->where('service_id', $serviceId)
+        $query = self::where('employee_id', $employeeId)
             ->whereDate('date', $date)
-            ->select('start_time', 'end_time')
-            ->get()
-            ->toArray();
+            ->select('start_time', 'end_time');
+
+        if ($excludeId) {
+            $query->where('id', '!=', $excludeId);
+        }
+
+        $existingAppointments = $query->get()->toArray();
 
         $startTime = strtotime('11:00');
         $endTime = strtotime('22:00');
-        $lanchStart = strtotime('14:00');
-        $lanchEnd = strtotime('15:00');
+        $lunchStart = strtotime('14:00');
+        $lunchEnd = strtotime('15:00');
         $allTimes = [];
 
         for ($time = $startTime; $time < $endTime; $time += 30 * 60) {
-            if ($time >= $lanchStart && $time < $lanchEnd) {
+            if ($time >= $lunchStart && $time < $lunchEnd) {
                 continue;
             }
             $allTimes[] = date('H:i', $time);
         }
 
-        $result = array_values(array_filter($allTimes, function ($slot) use ($existingAppointments) {
-            $slotTime = strtotime($slot);
+        $result = array_values(array_filter($allTimes, function ($slot) use ($existingAppointments, $date) {
+            $slotTime = strtotime($date . ' ' . $slot);
 
             foreach ($existingAppointments as $appointment) {
                 $start = strtotime($appointment['start_time']);

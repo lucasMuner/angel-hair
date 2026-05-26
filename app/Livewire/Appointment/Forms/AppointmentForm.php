@@ -17,10 +17,10 @@ class AppointmentForm extends Form
     public $service_id = '';
 
     #[Validate('required|date', as: 'data')]
-    public $scheduled_at = '';
+    public $date = '';
 
     #[Validate('required|date_format:H:i', as: 'horário')]
-    public $scheduled_time = '';
+    public $start_time = '';
 
     public $availableTimes = [];
 
