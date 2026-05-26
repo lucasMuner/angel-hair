@@ -63,12 +63,12 @@ class AppointmentModal extends BaseModal
     public function searchAvailability(AppointmentServiceInterface $service)
     {
         try {
-            $this->form->validateOnly('scheduled_at');
+            $this->form->validateOnly('date');
 
             $this->form->availableTimes = $service->getAvailableTimes(
                 $this->form->employee_id,
-                $this->form->service_id,
-                $this->form->scheduled_at
+                $this->form->date,
+                $this->isEditing ? $this->entityId : null
             );
 
         } catch (\Exception $e) {

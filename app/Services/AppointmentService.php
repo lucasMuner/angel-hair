@@ -20,7 +20,7 @@ class AppointmentService implements AppointmentServiceInterface
 
             $startTime = Carbon::createFromFormat(
                 'Y-m-d H:i',
-                $data['scheduled_at'] . ' ' . $data['scheduled_time']
+                $data['date'] . ' ' . $data['start_time']
             );
             $endTime = $startTime->copy()->addMinutes($duration);
 
@@ -29,7 +29,7 @@ class AppointmentService implements AppointmentServiceInterface
             $appointment->employee_id = $data['employee_id'];
             $appointment->client_id = $data['client_id'];
             $appointment->service_id = $data['service_id'];
-            $appointment->date = $data['scheduled_at'];
+            $appointment->date = $data['date'];
             $appointment->start_time = $startTime;
             $appointment->end_time = $endTime;
             $appointment->save();
@@ -62,7 +62,7 @@ class AppointmentService implements AppointmentServiceInterface
 
             $startTime = \Carbon\Carbon::createFromFormat(
                 'Y-m-d H:i',
-                $data['scheduled_at'] . ' ' . $data['scheduled_time']
+                $data['date'] . ' ' . $data['start_time']
             );
             $endTime = $startTime->copy()->addMinutes($duration);
 
@@ -70,7 +70,7 @@ class AppointmentService implements AppointmentServiceInterface
             $appointment->employee_id = $data['employee_id'];
             $appointment->client_id = $data['client_id'];
             $appointment->service_id = $data['service_id'];
-            $appointment->date = $data['scheduled_at'];
+            $appointment->date = $data['date'];
             $appointment->start_time = $startTime;
             $appointment->end_time = $endTime;
             $appointment->save();
@@ -131,9 +131,9 @@ class AppointmentService implements AppointmentServiceInterface
         return Appointment::latest()->get();
     }
 
-    public function getAvailableTimes(int $employeeId, int $serviceId, string $date): array
+    public function getAvailableTimes(int $employeeId, string $date, ?int $excludeId = null): array
     {
         $appointment = new Appointment();
-        return $appointment->getAvailableTimes($employeeId, $serviceId, $date);
+        return $appointment->getAvailableTimes($employeeId, $date, $excludeId);
     }
 }
