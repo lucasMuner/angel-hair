@@ -39,6 +39,9 @@ class AppointmentModal extends BaseModal
     {
         $this->cleanFields();
         parent::openModal();
+
+        $this->dispatch('select2-set-values', id: 'employee_id', values: '');
+        $this->dispatch('select2-set-values', id: 'client_id', values: '');
     }
 
     #[On('edit-appointment')]
@@ -49,6 +52,15 @@ class AppointmentModal extends BaseModal
             $this->form->fill($appointment->toArray());
             $this->isEditing = true;
             $this->showModal = true;
+
+            $this->form->availableTimes = $service->getAvailableTimes(
+                $appointment->employee_id,
+                $appointment->date,
+                $appointment->id
+            );
+
+            $this->dispatch('select2-set-values', id: 'employee_id', values: $appointment->employee_id);
+            $this->dispatch('select2-set-values', id: 'client_id', values: $appointment->client_id);
         }
     }
 
@@ -110,6 +122,35 @@ class AppointmentModal extends BaseModal
         } catch (\Exception $e) {
             $this->dispatch('alert', type: 'error', message: 'Erro: ' . $e->getMessage());
         }
+    }
+
+    public function updatedFormEmployeeId()
+    {
+        $this->form->service_id = null;
+        $this->form->date = null;
+        $this->form->start_time = null;
+        $this->form->availableTimes = null;
+    }
+
+    public function updatedFormClientId()
+    {
+        $this->form->service_id = null;
+        $this->form->date = null;
+        $this->form->start_time = null;
+        $this->form->availableTimes = null;
+    }
+
+    public function updatedFormServiceId()
+    {
+        $this->form->date = null;
+        $this->form->start_time = null;
+        $this->form->availableTimes = null;
+    }
+
+    public function updatedFormDate()
+    {
+        $this->form->start_time = null;
+        $this->form->availableTimes = null;
     }
 
     public function render()
