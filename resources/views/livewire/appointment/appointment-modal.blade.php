@@ -6,6 +6,7 @@
                 :options="$this->optionsEmployees"
                 id="employee_id"
                 name="employee_id"
+                wireModel="form.employee_id"
                 wire:model.live="form.employee_id"
                 placeholder="Selecione o funcionário"
             />
@@ -17,6 +18,7 @@
                 :options="$this->optionsClients"
                 id="client_id"
                 name="client_id"
+                wireModel="form.client_id"
                 wire:model.live="form.client_id"
                 placeholder="Selecione o cliente"
             />
@@ -30,6 +32,7 @@
                     :options="$this->optionsServices"
                     id="service_id"
                     name="service_id"
+                    wireModel="form.service_id"
                     wire:model.live="form.service_id"
                     placeholder="Selecione o serviço"
                 />

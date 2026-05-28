@@ -14,7 +14,6 @@
 <div
     wire:ignore
     x-data="select2Livewire('{{ $wireModel }}', '{{ $id }}', '{{ $placeholder }}')"
-    x-init="init()"
 >
     <select id="{{ $id }}" name="{{ $name }}[]" multiple class="w-full">
         @foreach($options as $optionId => $optionName)
