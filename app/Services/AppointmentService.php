@@ -131,9 +131,9 @@ class AppointmentService implements AppointmentServiceInterface
         return Appointment::latest()->get();
     }
 
-    public function getAvailableTimes(int $employeeId, string $date, ?int $excludeId = null): array
+    public function getAvailableTimes(int $employeeId, int $serviceId, string $date, ?int $excludeId = null): array
     {
         $appointment = new Appointment();
-        return $appointment->getAvailableTimes($employeeId, $date, $excludeId);
+        return $appointment->getAvailableTimes($employeeId, $serviceId, $date, $excludeId);
     }
 }

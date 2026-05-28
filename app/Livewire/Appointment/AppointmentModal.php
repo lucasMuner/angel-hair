@@ -55,6 +55,7 @@ class AppointmentModal extends BaseModal
 
             $this->form->availableTimes = $service->getAvailableTimes(
                 $appointment->employee_id,
+                $appointment->service_id,
                 $appointment->date,
                 $appointment->id
             );
@@ -79,6 +80,7 @@ class AppointmentModal extends BaseModal
 
             $this->form->availableTimes = $service->getAvailableTimes(
                 $this->form->employee_id,
+                $this->form->service_id,
                 $this->form->date,
                 $this->isEditing ? $this->entityId : null
             );

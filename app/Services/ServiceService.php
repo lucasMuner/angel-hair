@@ -22,6 +22,7 @@ class ServiceService implements ServiceServiceInterface
             $service->name = $data['name'];
             $service->description = $data['description'];
             $service->price = $data['price'];
+            $service->duration = $data['duration'];
             $service->saveWithLog();
 
             DB::commit();
@@ -51,6 +52,7 @@ class ServiceService implements ServiceServiceInterface
             $service->name = $data['name'];
             $service->description = $data['description'];
             $service->price = $data['price'];
+            $service->duration = $data['duration'];
             $service->saveWithLog();
 
             DB::commit();
