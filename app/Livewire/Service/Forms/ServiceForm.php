@@ -12,6 +12,7 @@ class ServiceForm extends Form
     public $name = '';
     public $description = '';
     public $price = '';
+    public $duration = '';
 
     // Regras dinâmicas
     protected function rules()
@@ -24,6 +25,7 @@ class ServiceForm extends Form
             ],
             'description' => 'required|max:255',
             'price' => 'required|numeric|min:0',
+            'duration' => 'required|integer|min:30',
         ];
     }
 
@@ -33,6 +35,7 @@ class ServiceForm extends Form
             'name' => 'nome',
             'description' => 'descrição',
             'price' => 'preço',
+            'duration' => 'duração',
         ];
     }
 

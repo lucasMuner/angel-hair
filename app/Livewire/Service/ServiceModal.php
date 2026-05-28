@@ -4,7 +4,7 @@ namespace App\Livewire\Service;
 
 use App\Livewire\Service\Forms\ServiceForm;
 use App\Contracts\ServiceServiceInterface;
-use Livewire\Attributes\On;
+use Livewire\Attributes\{Computed, On};
 use App\Livewire\Base\BaseModal;
 
 class ServiceModal extends BaseModal
@@ -17,6 +17,17 @@ class ServiceModal extends BaseModal
         parent::openModal();
     }
 
+    #[Computed]
+    public function optionsDurations()
+    {
+        return [
+            30 => '30 minutos',
+            60 => '1 hora',
+            90 => '1 hora e 30 minutos',
+            120 => '2 horas'
+        ];
+    }
+
     #[On('edit-service')]
     public function editService($id, ServiceServiceInterface $service)
     {
@@ -27,6 +38,7 @@ class ServiceModal extends BaseModal
                 'name'        => $found->name,
                 'description' => $found->description,
                 'price'       => $found->price,
+                'duration'    => $found->duration
             ]);
             $this->isEditing = true;
             $this->showModal = true;

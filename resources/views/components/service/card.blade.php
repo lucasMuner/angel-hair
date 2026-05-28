@@ -2,6 +2,7 @@
     'name' => '',
     'description' => '',
     'price' => '',
+    'duration' => '',
     'id' => null,
 ])
 
@@ -9,4 +10,5 @@
     <h5 class="text-xl font-bold text-goldenrod mb-2">Serviço: {{ $name }}</h5>
     <p class="text-champagne mb-1"><strong>Descrição:</strong> {{ $description }}</p>
     <p class="text-champagne mb-1"><strong>Preço:</strong> R$ {{ number_format($price, 2, ',', '.') }}</p>
+    <p class="text-champagne mb-1"><strong>Duração:</strong> {{ \App\Helpers\DurationHelper::format($duration) }}</p>
 </div>
