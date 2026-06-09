@@ -7,7 +7,7 @@
     'end_time' => ''
 ])
 
-<div @click="$dispatch('edit-appointment', { id: {{ $id }} })" class="cursor-pointer bg-tidewater hover:-translate-y-2 transition-transform rounded-lg p-4 mt-4" style="background-color: #1a3333; border: 1px solid #DAA520;">
+<div @click="$dispatch('edit-appointment', { id: {{ $id }} })" class="cursor-pointer bg-noir-card border border-gold-soft hover:border-goldenrod hover:-translate-y-2 transition-all rounded-lg p-4 mt-4">
     <h5 class="text-xl font-bold text-goldenrod mb-2">Agendamento #{{ $id }}</h5>
     <p class="text-champagne mb-1"><strong>Funcionário:</strong> {{ $employee }}</p>
     <p class="text-champagne mb-1"><strong>Cliente:</strong> {{ $client }}</p>

@@ -15,7 +15,7 @@
 
         @livewireStyles
     </head>
-    <body class="bg-[#2F4F4F] flex overflow-hidden">
+    <body class="bg-noir-deep flex overflow-hidden">
 
         @if(!Request::is('/'))
             <x-side-bar :active="$active ?? ''" />

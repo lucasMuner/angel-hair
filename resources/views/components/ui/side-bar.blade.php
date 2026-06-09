@@ -4,8 +4,7 @@
 
 <aside
     :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'"
-    class="fixed lg:relative z-40 h-screen w-[280px] flex-shrink-0 flex flex-col py-8 px-4 transition-transform duration-300 ease-in-out"
-    style="background-color: #1a3333; border-right: 6px solid #DAA520; box-shadow: 0 5px 20px rgba(0,0,0,0.7);"
+    class="fixed lg:relative z-40 h-screen w-[280px] flex-shrink-0 flex flex-col py-8 px-4 transition-transform duration-300 ease-in-out bg-noir-deep border-r-4 border-r-goldenrod shadow-[4px_0_24px_rgba(0,0,0,0.8)]"
 >
 
     {{-- Logo --}}

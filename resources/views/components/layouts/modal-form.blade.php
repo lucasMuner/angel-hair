@@ -21,11 +21,11 @@
             x-transition:leave="transition ease-in duration-200"
             x-transition:leave-start="opacity-100 translate-y-0"
             x-transition:leave-end="opacity-0 translate-y-8"
-            class="rounded-lg w-full {{ $modalWidth ?? 'max-w-md' }} p-6 bg-[#2F4F4F] border border-[#DAA520]"
+            class="rounded-lg w-full {{ $modalWidth ?? 'max-w-md' }} p-6 bg-noir-deep border border-goldenrod"
         >
             <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold text-goldenrod font-bodoni text-gray-800">{{ $isEditing ? 'Editar' : 'Adicionar' }} {{ $modalTitle }}</h3>
-                <button @click="$wire.closeModal()" class="cursor-pointer text-gray-500 hover:text-gray-700">
+                <h3 class="text-xl font-bold text-goldenrod font-bodoni">{{ $isEditing ? 'Editar' : 'Adicionar' }} {{ $modalTitle }}</h3>
+                <button @click="$wire.closeModal()" class="cursor-pointer text-champagne-sm hover:text-champagne transition"
                     <i class="fa-solid fa-times text-xl"></i>
                 </button>
             </div>

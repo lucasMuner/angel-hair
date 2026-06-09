@@ -2,7 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <x-layouts.partials.head :title="$title ?? ''" />
 
-    <body class="bg-[#2F4F4F] flex overflow-hidden"
+    <body class="bg-noir-deep flex overflow-hidden"
         x-data="{ sidebarOpen: window.innerWidth >= 1024 }"
         @resize.window="if (window.innerWidth >= 1024) sidebarOpen = true"
     >

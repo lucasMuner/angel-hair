@@ -10,5 +10,5 @@
     type="{{ $type }}"
     id="{{ $id }}"
     name="{{ $name }}"
-    {{ $attributes->merge(['class' => 'w-full border border-gray-300 rounded-md py-2 px-4 text-champagne focus:outline-none focus:ring-[#DAA520] focus:ring-2']) }}
+    {{ $attributes->merge(['class' => 'w-full bg-noir-card border border-gold-soft rounded-md py-2 px-4 text-champagne placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-goldenrod transition']) }}
 >
