@@ -1,7 +1,6 @@
 <button
     @click="sidebarOpen = !sidebarOpen"
-    class="lg:hidden fixed top-4 left-4 z-50 w-10 h-10 flex items-center justify-center rounded-full text-goldenrod text-lg"
-    style="background-color: #1a3333; border: 2px solid #DAA520;"
+    class="lg:hidden fixed top-4 left-4 z-50 w-10 h-10 flex items-center justify-center rounded-full text-goldenrod text-lg bg-noir-surface border-2 border-goldenrod text-goldenrod"
 >
     <i class="fa-solid" :class="sidebarOpen ? 'fa-times' : 'fa-bars'"></i>
 </button>

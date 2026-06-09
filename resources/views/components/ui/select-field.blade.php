@@ -19,7 +19,7 @@
         name="{{ $name }}"
         id="{{ $id }}"
         {{ $attributes->merge([
-            'class' => 'w-full border border-gray-300 rounded-md py-2 px-4 text-champagne bg-[#2F4F4F] focus:outline-none focus:ring-[#DAA520] focus:ring-2'
+            'class' => 'w-full bg-noir-card border border-gold-soft rounded-md py-2 px-4 text-champagne placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-goldenrod transition'
         ]) }}
     >
         <option value="">{{ $placeholder }}</option>

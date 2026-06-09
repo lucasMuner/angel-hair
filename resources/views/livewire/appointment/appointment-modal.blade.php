@@ -67,7 +67,7 @@
                     class="hidden peer"
                 />
                 <label for="time_{{ $item }}" class="cursor-pointer px-4 py-2 rounded-full transition block
-                    {{ $isSelected ? 'bg-goldenrod text-white' : 'bg-gray-700 text-champagne hover:bg-gray-600' }}">
+                    {{ $isSelected ? 'bg-goldenrod text-white' : 'bg-noir-card border border-gold-soft text-champagne hover:border-goldenrod hover:text-goldenrod' }}">
                     {{ $item }}
                 </label>
             @endforeach

@@ -70,6 +70,9 @@ class AppointmentModal extends BaseModal
     {
         $this->form->employee_id = $employeeId;
         $this->form->service_id = null;
+        unset($this->optionsServices);
+
+        $this->dispatch('select2-set-values', id: 'service_id', values: '');
     }
 
     #[On('search-availability')]
@@ -128,10 +131,13 @@ class AppointmentModal extends BaseModal
 
     public function updatedFormEmployeeId()
     {
+        unset($this->optionsServices);
         $this->form->service_id = null;
         $this->form->date = null;
         $this->form->start_time = null;
         $this->form->availableTimes = null;
+
+        $this->dispatch('select2-set-values', id: 'service_id', values: '');
     }
 
     public function updatedFormClientId()
