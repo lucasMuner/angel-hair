@@ -222,3 +222,6 @@
 .border-r-goldenrod {
     border-right-color: #C9952A;
 }
+
+.peer:checked ~ .toggle-track  { background-color: var(--color-gold); }
+.peer:checked ~ .toggle-track .toggle-thumb { transform: translateX(1.25rem); }

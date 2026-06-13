@@ -25,6 +25,7 @@ class LoginRequest extends FormRequest
         return [
             'username' => ['required', 'string'],
             'password' => ['required', 'string'],
+            'remember' => ['boolean', 'nullable'],
         ];
     }
 
@@ -32,7 +33,8 @@ class LoginRequest extends FormRequest
     {
         return [
             'username.required' => 'O campo de usuário é obrigatório.',
-            'password.required' => 'O campo de senha é obrigatório.',
+            'username.exists' => 'Este usuário não existe.',
+            'password.required' => 'O campo de senha é obrigatório.'
         ];
     }
 }
