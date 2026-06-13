@@ -41,4 +41,9 @@ class MainController extends Controller
     {
         return view('services.index');
     }
+
+    public function register()
+    {
+        return view('auth.register');
+    }
 }

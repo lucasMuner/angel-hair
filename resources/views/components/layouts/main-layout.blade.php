@@ -7,7 +7,7 @@
         @resize.window="if (window.innerWidth >= 1024) sidebarOpen = true"
     >
 
-        @unless(Request::is('/'))
+        @unless(Request::is('/')  || Request::is('register') || Request::is('email/verify'))
             <x-layouts.partials.sidebar-toggle />
             <x-ui.side-bar :active="$active ?? ''" />
         @endunless

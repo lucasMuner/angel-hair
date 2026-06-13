@@ -4,34 +4,80 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegisterRequest;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use App\Models\User;
+use App\Models\Client;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class AuthController extends Controller
 {
     public function login(LoginRequest $request)
     {
-        $credentials = $request->only('username', 'password');
+        $credentials = $request->validated();
+        $remember = $credentials['remember'] ?? false;
 
-        $user = User::where('name', $credentials['username'])->first();
+        unset($credentials['remember']);
 
-        if(!$user) return $this->redirectWithError('loginError', 'Usuário não encontrado!');
-
-        $password = $credentials['password'];
-
-        if(!password_verify($password, $user->password)){
-            return $this->redirectWithError('loginError', 'Senha incorreta!');
+        Log::info('Tentativa de login => ' . json_encode($credentials));
+        if(Auth::attempt($credentials, $remember)) {
+            // Regenerate session to prevent fixation attacks
+            $request->session()->regenerate();
+            return redirect()->intended(route('home'));
         }
 
-        session(['user_id' => $user->id]);
-
-        return redirect()->route('home');
+        Log::warning('Falha no login => ' . json_encode($credentials));
+        return back()->withErrors([
+            'username' => 'Usuário ou senha incorretos.',
+        ])->onlyInput('username');
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
-        session()->forget('user_id');
+        Auth::logout();
+
+        // Clear session data and regenerate token to prevent CSRF attacks
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
         return redirect()->route('login');
+    }
+
+    public function register(RegisterRequest $request)
+    {
+
+        DB::beginTransaction();
+        $credentials = $request->validated();
+        Log::info("Tentativa de registro => " . json_encode($credentials));
+        try {
+            $user = User::create([
+                'name' => $credentials['name'] ?? null,
+                'username' => $credentials['username'],
+                'password' => bcrypt($credentials['password']),
+                'email' => $credentials['email'] ?? null,
+            ]);
+
+            $client = Client::create([
+                'user_id' => $user->id,
+                'phone' => $credentials['phone'] ?? null,
+                'birth_date' => $credentials['birth_date'] ?? null
+            ]);
+
+            $user->sendEmailVerificationNotification();
+
+            Auth::login($user);
+
+            DB::commit();
+            return redirect()->route('home');
+        } catch (\Exception $e) {
+            Log::error('Erro ao registrar usuário => ' . $e->getMessage());
+            DB::rollBack();
+            return back()->withErrors([
+                'username' => 'Ocorreu um erro ao registrar. Por favor, tente novamente.',
+            ])->onlyInput('username');
+        }
     }
 
 }
