@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use App\Models\User;
 use App\Models\Client;
+use Illuminate\Support\Facades\Cache;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -25,6 +26,16 @@ class AuthController extends Controller
         if(Auth::attempt($credentials, $remember)) {
             // Regenerate session to prevent fixation attacks
             $request->session()->regenerate();
+
+            /** @var \App\Models\User $user */
+            $user = Auth::user();
+
+            if (!$user->hasVerifiedEmail()) {
+                $this->resendVerificationThrottled($user);
+
+                return redirect()->route('verification.notice');
+            }
+
             return redirect()->intended(route('home'));
         }
 
@@ -78,6 +89,21 @@ class AuthController extends Controller
                 'username' => 'Ocorreu um erro ao registrar. Por favor, tente novamente.',
             ])->onlyInput('username');
         }
+    }
+
+    private function resendVerificationThrottled(User $user): void
+    {
+        $key = "verification-resent:{$user->id}";
+
+        if (! Cache::has($key)) {
+            $user->sendEmailVerificationNotification();
+            $this->markVerificationSent($user);
+        }
+    }
+
+    private function markVerificationSent(User $user): void
+    {
+        Cache::put("verification-resent:{$user->id}", true, now()->addMinutes(5));
     }
 
 }

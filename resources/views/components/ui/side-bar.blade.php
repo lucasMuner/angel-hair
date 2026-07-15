@@ -30,6 +30,12 @@
 
     {{-- Footer da sidebar --}}
     <div class="mt-auto">
+        <div>
+            <a href="#"
+               class="w-full flex items-center text-champagne text-lg gap-3 px-4 py-2 rounded-lg font-medium transition hover:bg-red-10">
+                <i class="fa-solid fa-user"></i> {{ auth()->user()->name ?? ' - ' }}
+            </a>
+        </div>
         <form method="POST" action="{{ route('logout') }}">
             @csrf
             <button type="submit"
