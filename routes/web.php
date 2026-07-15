@@ -14,11 +14,14 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/home', [MainController::class, 'home'])->name('home');
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/appointments', [MainController::class, 'appointments'])->name('appointments');
     Route::get('/clients', [MainController::class, 'clients'])->name('clients');
     Route::get('/employees', [MainController::class, 'employees'])->name('employees');
     Route::get('/services', [MainController::class, 'services'])->name('services');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 
 Route::get('/email/verify', function () {
