@@ -46,4 +46,9 @@ class MainController extends Controller
     {
         return view('auth.register');
     }
+
+    public function roles()
+    {
+        return view('roles.index');
+    }
 }

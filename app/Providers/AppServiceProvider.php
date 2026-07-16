@@ -10,6 +10,7 @@ use App\Contracts\EmployeeServiceInterface;
 use App\Contracts\ServiceServiceInterface;
 use App\Contracts\AppointmentServiceInterface;
 use App\Contracts\UserServiceInterface;
+use App\Contracts\RoleServiceInterface;
 
 // Services
 use App\Services\ClientService;
@@ -17,6 +18,7 @@ use App\Services\EmployeeService;
 use App\Services\ServiceService;
 use App\Services\AppointmentService;
 use App\Services\UserService;
+use App\Services\RoleService;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -30,6 +32,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(EmployeeServiceInterface::class, EmployeeService::class);
         $this->app->bind(ServiceServiceInterface::class, ServiceService::class);
         $this->app->bind(AppointmentServiceInterface::class, AppointmentService::class);
+        $this->app->bind(RoleServiceInterface::class, RoleService::class);
     }
 
     /**
