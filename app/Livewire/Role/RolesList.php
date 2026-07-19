@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Employee;
+namespace App\Livewire\Role;
 
 use Livewire\Component;
 use Livewire\Attributes\On;

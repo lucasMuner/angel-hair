@@ -1,77 +1,68 @@
 <?php
 
-namespace App\Livewire\Employee;
+namespace App\Livewire\Role;
 
-use App\Livewire\Employee\Forms\EmployeeForm;
-use App\Contracts\EmployeeServiceInterface;
-use App\Contracts\ServiceServiceInterface;
+use App\Models\Role;
+use App\Livewire\Role\Forms\RoleForm;
+use App\Contracts\RoleServiceInterface;
 use Livewire\Attributes\{On, Computed};
 use App\Livewire\Base\BaseModal;
 
 class RoleModal extends BaseModal
 {
-    public EmployeeForm $form;
+    public RoleForm $form;
 
-    #[On('open-employee-modal')]
+    #[On('open-role-modal')]
     public function openModal()
     {
         parent::openModal();
     }
 
-    #[Computed]
-    public function optionsServices()
+    #[On('edit-role')]
+    public function editRole($id, RoleServiceInterface $service)
     {
-        return app(ServiceServiceInterface::class)->all()->pluck('name', 'id')->toArray();
-    }
-
-    #[On('edit-employee')]
-    public function editEmployee($id, EmployeeServiceInterface $service)
-    {
-        if ($employee = $service->find($id)) {
-            $this->entityId = $employee->id;
+        if ($role = $service->find($id)) {
+            $this->entityId = $role->id;
             $this->form->fill([
-                'userId' => $employee->user_id,
-                'name'   => $employee->user->name ?? '',
-                'email'  => $employee->user->email ?? '',
-                'services' => $employee->services->pluck('id')->toArray(),
-                'phone'  => \App\Helpers\PhoneHelper::format($employee->phone) ?? '',
+                'id' => $role->id,
+                'name' => $role->name,
+                'description' => $role->description,
             ]);
+
             $this->isEditing = true;
             $this->showModal = true;
-
-            $this->dispatchSelect2SetValues('services', $employee->services->pluck('id')->toArray());
         }
     }
 
-    public function save(EmployeeServiceInterface $service)
+    public function save(RoleServiceInterface $service)
     {
         try {
             $validatedData = $this->form->validate();
 
             if ($this->isEditing) {
                 $service->update($this->entityId, $validatedData);
-                $message = 'Funcionário atualizado com sucesso!';
+                $message = 'Função atualizada com sucesso!';
             } else {
                 $service->store($validatedData);
-                $message = 'Funcionário criado com sucesso!';
+                $message = 'Função criada com sucesso!';
             }
 
-            $this->notify($message, 'refreshEmployeesList');
+            $this->notify($message, 'refreshRolesList');
 
         } catch (\Exception $e) {
             $this->dispatch('alert', type: 'error', message: 'Erro: ' . $e->getMessage());
         }
     }
 
-    public function delete(EmployeeServiceInterface $service)
+    public function delete(RoleServiceInterface $service)
     {
         try {
             if (!$this->isEditing || !$this->entityId) {
-                throw new \Exception('Funcionário não encontrado.');
+                throw new \Exception('Função não encontrada.');
             }
 
             $service->delete($this->entityId);
-            $this->notify('Funcionário deletado com sucesso!', 'refreshEmployeesList');
+            $this->notify('Função deletada com sucesso!', 'refreshRolesList');
 
         } catch (\Exception $e) {
             $this->dispatch('alert', type: 'error', message: 'Erro: ' . $e->getMessage());
@@ -80,6 +71,6 @@ class RoleModal extends BaseModal
 
     public function render()
     {
-        return view('livewire.employee.employee-modal');
+        return view('livewire.role.role-modal');
     }
 }
