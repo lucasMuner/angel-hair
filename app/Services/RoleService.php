@@ -14,33 +14,25 @@ class RoleService implements RoleServiceInterface
 {
 
     /**
-     * Create new employee
+     * Create new role
      */
-    public function store(array $data): Employee
+    public function store(array $data): Role
     {
         DB::beginTransaction();
         try {
-            // Create User
-            $user = $this->userService->storeClientEmployee($data);
-            $data['phone'] = \App\Helpers\PhoneHelper::strip($data['phone']);
-
-            $data['services'] = $data['services'] ?? [];
-
-            // Create Employee
-            $employee = new Employee();
-            $employee->user_id = $user->id;
-            $employee->phone = $data['phone'];
-            $employee->saveWithLog();
-
-            $employee->services()->sync($data['services']);
+            // Create Role
+            $role = new Role();
+            $role->name = strtolower($data["name"]);
+            $role->description = $data["description"];
+            $role->saveWithLog();
 
             DB::commit();
 
-            return $employee;
+            return $role;
 
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error('Erro ao criar funcionário', [
+            Log::error('Erro ao criar função', [
                 'error' => $e->getMessage(),
                 'data' => $data
             ]);
@@ -49,64 +41,60 @@ class RoleService implements RoleServiceInterface
     }
 
     /**
-     * Update client
+     * Update role
      */
-    public function update(int $employeeId, array $data): Employee
+    public function update(int $roleId, array $data): Role
     {
         DB::beginTransaction();
         try {
-            $employee = Employee::with('user')->findOrFail($employeeId);
+            $role = Role::findOrFail($roleId);
 
-            // Update User
-            $this->userService->updateClientEmployee($data, $employee->user);
-            $data['phone'] = \App\Helpers\PhoneHelper::strip($data['phone']);
-            // Update Employee
-            $employee->phone = $data['phone'];
-            $employee->saveWithLog();
-
-            $employee->services()->sync($data['services']);
-
-            DB::commit();
-
-            return $employee->fresh();
-
-        } catch (\Exception $e) {
-            DB::rollBack();
-            Log::error('Erro ao atualizar funcionário', [
-                'employee_id' => $employeeId,
-                'error' => $e->getMessage(),
-                'data' => $data
-            ]);
-            throw $e;
-        }
-    }
-
-    /**
-     * Delete employee
-     */
-    public function delete(int $employeeId): bool
-    {
-        DB::beginTransaction();
-        try {
-            $employee = Employee::with('user')->findOrFail($employeeId);
-            $user = $employee->user;
-
-            $employee->services()->detach();
-            // Delete Employee
-            $employee->deleteWithLog();
-
-            // Delete User
-            if ($user) {
-                $user->delete();
+            if(strtolower($role->name) == 'admin') {
+                throw new \Exception('Não é possível atualizar a função Admin.');
             }
+
+            // Update Role
+            $role->name = strtolower($data["name"]);
+            $role->description = $data["description"];
+            $role->saveWithLog();
+
+            DB::commit();
+
+            return $role;
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Erro ao atualizar função', [
+                'role_id' => $roleId,
+                'error' => $e->getMessage(),
+                'data' => $data
+            ]);
+            throw $e;
+        }
+    }
+
+    /**
+     * Delete role
+     */
+    public function delete(int $roleId): bool
+    {
+        DB::beginTransaction();
+        try {
+            $role = Role::findOrFail($roleId);
+
+            if(strtolower($role->name) == 'admin') {
+                throw new \Exception('Não é possível deletar a função Admin.');
+            }
+
+            $role->deleteWithLog();
 
             DB::commit();
             return true;
 
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error('Erro ao deletar funcionário', [
-                'employee_id' => $employeeId,
+            Log::error('Erro ao deletar função', [
+                'role_id' => $roleId,
                 'error' => $e->getMessage()
             ]);
             throw $e;
@@ -118,7 +106,7 @@ class RoleService implements RoleServiceInterface
      */
     public function find(int $roleId): ?Role
     {
-        return Role::with('user')->find($roleId);
+        return Role::find($roleId);
     }
 
     /**
@@ -126,6 +114,6 @@ class RoleService implements RoleServiceInterface
      */
     public function all()
     {
-        return Role::with('user')->latest()->get();
+        return Role::all();
     }
 }

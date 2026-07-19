@@ -10,7 +10,7 @@
    <div class="mx-4 mb-8 flex items-center justify-end">
         <button type="button"
             x-data
-            x-on:click="$dispatch('open-appointment-modal')"
+            x-on:click="$dispatch('open-role-modal')"
             class="font-bold cursor-pointer bg-goldenrod text-white px-4 py-2 rounded-md hover:bg-goldenrod-dark transition">
             <i class="fa-solid fa-plus"></i> Adicionar Função
         </button>
