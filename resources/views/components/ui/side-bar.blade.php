@@ -28,6 +28,8 @@
         <x-ui.side-bar-item href="{{ route('appointments') }}" :active="$active" module="appointments" name="Agendamentos" icon="fa-solid fa-calendar-check"/>
 
         <x-ui.side-bar-item href="{{ route('roles') }}" :active="$active" module="roles" name="Funções" icon="fa-solid fa-user-tag"/>
+
+        <x-ui.side-bar-item href="{{ route('users') }}" :active="$active" module="users" name="Usuários" icon="fa-solid fa-user-circle"/>
     </nav>
 
     {{-- Footer da sidebar --}}

@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
+use Illuminate\Pagination\Paginator;
+
 // Contracts
 use App\Contracts\ClientServiceInterface;
 use App\Contracts\EmployeeServiceInterface;
@@ -11,6 +13,8 @@ use App\Contracts\ServiceServiceInterface;
 use App\Contracts\AppointmentServiceInterface;
 use App\Contracts\UserServiceInterface;
 use App\Contracts\RoleServiceInterface;
+
+use Illuminate\Support\Facades\View;
 
 // Services
 use App\Services\ClientService;
@@ -40,6 +44,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Paginator::useTailwind();
     }
 }
