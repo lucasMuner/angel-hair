@@ -35,7 +35,8 @@ class UserModal extends BaseModal
                 'id' => $user->id,
                 'username' => $user->username ?? '',
                 'name'   => $user->name ?? '',
-                'email'  => $user->email ?? ''
+                'email'  => $user->email ?? '',
+                'role_id' => $user->role_id ?? ''
             ]);
 
             $this->dispatch('select2-set-values', id: 'role_id', values: $user->role_id);

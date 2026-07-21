@@ -3,6 +3,9 @@
 namespace App\Services;
 
 use App\Models\User;
+use App\Models\Role;
+use App\Models\Client;
+use App\Models\Employee;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Contracts\UserServiceInterface;
@@ -22,7 +25,10 @@ class UserService implements UserServiceInterface
             $user->name = $data["name"];
             $user->email = $data["email"];
             $user->password = bcrypt($data["password"]);
+            $user->role_id = $data["role_id"];
             $user->saveWithLog();
+
+            $this->updateRoleUser($user->id, $data["role_id"]);
 
             DB::commit();
 
@@ -51,7 +57,10 @@ class UserService implements UserServiceInterface
             $user->username = strtolower($data["username"]);
             $user->name = $data["name"];
             $user->email = $data["email"];
+            $user->role_id = $data["role_id"];
             $user->saveWithLog();
+
+            $this->updateRoleUser($userId, $data["role_id"]);
 
             DB::commit();
 
@@ -107,7 +116,7 @@ class UserService implements UserServiceInterface
     /**
      * List all users with their associated data
      */
-    public function all(?string $search = null, int $perPage = 3)
+    public function all(?string $search = null, int $perPage = 15)
     {
         return User::query()
             ->when($search, function ($query, $search) {
@@ -145,4 +154,48 @@ class UserService implements UserServiceInterface
         $user->saveWithLog();
         return $user;
     }
+
+    private function updateRoleUser(int $userId, int $roleId)
+    {
+        $role = Role::find($roleId);
+
+        if($role){
+            if(strtolower($role->name) == 'client') {
+                // Save the user as a client
+                $isClient = Client::where('user_id',  $userId)->exists();
+                $isEmployee = Employee::where('user_id', $userId)->exists();
+
+                if($isEmployee) throw new \Exception('O usuário já está associado a um funcionário. Não é possível associar a um cliente.');
+
+                if(!$isClient) {
+                    $client = new Client();
+                    $client->user_id = $userId;
+                    $client->saveWithLog();
+                }
+            } else if (strtolower($role->name) == 'employee') {
+                // Save the user as an employee
+                $isEmployee = Employee::where('user_id', $userId)->exists();
+                $isClient = Client::where('user_id',  $userId)->exists();
+
+                if($isClient) throw new \Exception('O usuário já está associado a um cliente. Não é possível associar a um funcionário.');
+
+                if(!$isEmployee) {
+                    $employee = new Employee();
+                    $employee->user_id = $userId;
+                    $employee->saveWithLog();
+                }
+            }
+        } else {
+            $isEmployee = Employee::where('user_id', $userId)->first();
+            if($isEmployee) {
+                $isEmployee->delete();
+            }
+
+            $isClient = Client::where('user_id', $userId)->first();
+            if($isClient) {
+                $isClient->delete();
+            }
+        }
+    }
+
 }

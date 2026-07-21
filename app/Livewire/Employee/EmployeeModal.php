@@ -34,7 +34,7 @@ class EmployeeModal extends BaseModal
                 'name'   => $employee->user->name ?? '',
                 'email'  => $employee->user->email ?? '',
                 'services' => $employee->services->pluck('id')->toArray(),
-                'phone'  => \App\Helpers\PhoneHelper::format($employee->phone) ?? '',
+                'phone'  => !empty($employee->phone) ? \App\Helpers\PhoneHelper::format($employee->phone) : '',
             ]);
             $this->isEditing = true;
             $this->showModal = true;

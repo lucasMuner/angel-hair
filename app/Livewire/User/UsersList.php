@@ -12,6 +12,8 @@ class UsersList extends Component
     use WithPagination;
 
     public $search = '';
+
+    #[On('refreshUsersList')]
     public function updatingSearch()
     {
         $this->resetPage();
@@ -22,6 +24,6 @@ class UsersList extends Component
         return view('livewire.user.users-list', [
             'users' => app(UserServiceInterface::class)->all($this->search),
         ]);
-}
+    }
 }
 
