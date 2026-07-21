@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use App\Models\User;
 use App\Models\Client;
+use App\Models\Role;
 use Illuminate\Support\Facades\Cache;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -63,11 +64,17 @@ class AuthController extends Controller
         $credentials = $request->validated();
         Log::info("Tentativa de registro => " . json_encode($credentials));
         try {
+
+            $role = Role::where('name', 'client')->first();
+
+            if(!$role) throw new \Exception('Não foi possível realizar o registro. Por favor, contate o administrador do sistema.');
+
             $user = User::create([
                 'name' => $credentials['name'] ?? null,
                 'username' => $credentials['username'],
                 'password' => bcrypt($credentials['password']),
                 'email' => $credentials['email'] ?? null,
+                'role_id' => $role->id
             ]);
 
             $client = Client::create([

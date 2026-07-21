@@ -129,29 +129,18 @@ class UserService implements UserServiceInterface
             ->paginate($perPage);
     }
 
-    public function storeClientEmployee (array $data): User
+    public function setUserRole(int $userId, string $roleName): User
     {
-        $generatedUsername = str_replace(' ', '', strtolower($data['name']));
-        $existingUser = User::where('username', $generatedUsername)->orWhere('email', $data['email'])->first();
+        $role = Role::where('name', $roleName)->first();
 
-        if ($existingUser) throw new \Exception('O nome de usuário ou email já está em uso por outro usuário.');
+        if (!$role) {
+            throw new \Exception("Role '{$roleName}' não encontrada.");
+        }
 
-        $user = new User();
-        $user->username = $generatedUsername;
-        $user->name = $data['name'];
-        $user->email = $data['email'];
-        $user->password = bcrypt($data['name'] . '@' . date('Y'));
+        $user = User::findOrFail($userId);
+        $user->role_id = $role->id;
         $user->saveWithLog();
-        return $user;
 
-    }
-
-    public function updateClientEmployee (array $data, User $user): User
-    {
-        $user->name = $data['name'];
-        $user->email = $data['email'];
-        $user->username = str_replace(' ', '', strtolower($data['name']));
-        $user->saveWithLog();
         return $user;
     }
 
