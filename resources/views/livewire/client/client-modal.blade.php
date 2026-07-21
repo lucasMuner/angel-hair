@@ -1,22 +1,13 @@
 <x-layouts.modal-form modalTitle="Cliente" :isEditing="$isEditing" modalEvent="open-client-modal">
     <div class="mb-4">
-        <x-ui.input-field
-            label="Nome"
-            id="name"
-            name="name"
-            wire:model="form.name"
-            placeholder="Digite o nome do cliente"
-        />
-    </div>
-
-    <div class="mb-4">
-        <x-ui.input-field
-            label="Email"
-            id="email"
-            name="email"
-            type="email"
-            wire:model="form.email"
-            placeholder="Digite o email do cliente"
+        <x-ui.select-field
+            label="Usuário"
+            :options="$this->optionsUsers"
+            id="userId"
+            name="userId"
+            wireModel="form.userId"
+            wire:model.live="form.userId"
+            placeholder="Selecione o usuário"
         />
     </div>
 

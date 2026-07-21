@@ -5,6 +5,7 @@ namespace App\Livewire\Employee;
 use App\Livewire\Employee\Forms\EmployeeForm;
 use App\Contracts\EmployeeServiceInterface;
 use App\Contracts\ServiceServiceInterface;
+use App\Contracts\UserServiceInterface;
 use Livewire\Attributes\{On, Computed};
 use App\Livewire\Base\BaseModal;
 
@@ -16,12 +17,21 @@ class EmployeeModal extends BaseModal
     public function openModal()
     {
         parent::openModal();
+
+        $this->dispatchSelect2SetValues('services', []);
+        $this->dispatch('select2-set-disabled', id: 'userId', disabled: false);
     }
 
     #[Computed]
     public function optionsServices()
     {
         return app(ServiceServiceInterface::class)->all()->pluck('name', 'id')->toArray();
+    }
+
+    #[Computed]
+    public function optionsUsers()
+    {
+        return app(UserServiceInterface::class)->all()->pluck('name', 'id')->toArray();
     }
 
     #[On('edit-employee')]
@@ -40,6 +50,9 @@ class EmployeeModal extends BaseModal
             $this->showModal = true;
 
             $this->dispatchSelect2SetValues('services', $employee->services->pluck('id')->toArray());
+            $this->dispatch('select2-set-values', id: 'userId', values: $employee->user_id);
+
+            $this->dispatch('select2-set-disabled', id: 'userId', disabled: true);
         }
     }
 

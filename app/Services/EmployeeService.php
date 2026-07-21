@@ -27,7 +27,7 @@ class EmployeeService implements EmployeeServiceInterface
         DB::beginTransaction();
         try {
             // Create User
-            $user = $this->userService->storeClientEmployee($data);
+            $user = $this->userService->setUserRole($data['user_id'], 'employee');
             $data['phone'] = \App\Helpers\PhoneHelper::strip($data['phone']);
 
             $data['services'] = $data['services'] ?? [];
@@ -64,7 +64,6 @@ class EmployeeService implements EmployeeServiceInterface
             $employee = Employee::with('user')->findOrFail($employeeId);
 
             // Update User
-            $this->userService->updateClientEmployee($data, $employee->user);
             $data['phone'] = \App\Helpers\PhoneHelper::strip($data['phone']);
             // Update Employee
             $employee->phone = $data['phone'];

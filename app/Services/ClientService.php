@@ -27,7 +27,7 @@ class ClientService implements ClientServiceInterface
         DB::beginTransaction();
         try {
             // Create User
-            $user = $this->userService->storeClientEmployee($data);
+            $user = $this->userService->setUserRole($data['user_id'], 'client');
             $data['phone'] = \App\Helpers\PhoneHelper::strip($data['phone']);
             // Create Client
             $client = new Client();
@@ -59,7 +59,6 @@ class ClientService implements ClientServiceInterface
             $client = Client::with('user')->findOrFail($clientId);
 
             // Update User
-            $this->userService->updateClientEmployee($data, $client->user);
             $data['phone'] = \App\Helpers\PhoneHelper::strip($data['phone']);
             // Update Client
             $client->phone = $data['phone'];

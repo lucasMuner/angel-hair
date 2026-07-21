@@ -16,5 +16,14 @@ export default (wireModel, selectId, placeholder = 'Selecione as opções...') =
                 $(`#${selectId}`).val(e.detail.values).trigger('change.select2');
             });
         });
+
+        window.addEventListener('select2-set-disabled', (e) => {
+            if (e.detail.id !== selectId) return;
+            this.$nextTick(() => {
+                $(`#${selectId}`)
+                    .prop('disabled', e.detail.disabled)
+                    .trigger('change.select2');
+            });
+        });
     }
 });
