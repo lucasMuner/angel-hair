@@ -26,7 +26,7 @@ class ClientModal extends BaseModal
                 'userId' => $client->user_id,
                 'name'   => $client->user->name ?? '',
                 'email'  => $client->user->email ?? '',
-                'phone'  => \App\Helpers\PhoneHelper::format($client->phone) ?? '',
+                'phone'  => !empty($client->phone) ? \App\Helpers\PhoneHelper::format($client->phone) : '',
             ]);
             $this->isEditing = true;
             $this->showModal = true;

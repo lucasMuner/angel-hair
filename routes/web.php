@@ -19,6 +19,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/clients', [MainController::class, 'clients'])->name('clients');
     Route::get('/employees', [MainController::class, 'employees'])->name('employees');
     Route::get('/services', [MainController::class, 'services'])->name('services');
+    Route::get('/users', [MainController::class, 'users'])->name('users');
 });
 
 Route::middleware('auth')->group(function () {

@@ -51,4 +51,9 @@ class MainController extends Controller
     {
         return view('roles.index');
     }
+
+    public function users()
+    {
+        return view('users.index');
+    }
 }
