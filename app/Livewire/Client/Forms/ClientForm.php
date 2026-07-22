@@ -8,36 +8,31 @@ use App\Helpers\PhoneHelper;
 
 class ClientForm extends Form
 {
-    public $name = '';
-    public $email = '';
     public $phone = '';
     public $userId = null;
+    public $birth_date = null;
+    public $notes = null;
 
     protected function rules()
     {
         return [
-            'name' => [
+            'phone' => 'required|string|max:20',
+            'userId' => [
                 'required',
-                'string',
-                'max:255',
-                Rule::unique('users', 'name')->ignore($this->userId),
+                Rule::exists('users', 'id'),
             ],
-            'email' => [
-                'required',
-                'email',
-                'max:255',
-                Rule::unique('users', 'email')->ignore($this->userId),
-            ],
-            'phone' => 'required|string|max:20'
+            'birth_date' => 'nullable|date',
+            'notes' => 'nullable|string|max:255',
         ];
     }
 
     protected function validationAttributes()
     {
         return [
-            'name' => 'nome',
-            'email' => 'email',
             'phone' => 'telefone',
+            'userId' => 'usuário',
+            'birth_date' => 'aniversário',
+            'notes' => 'sobre',
         ];
     }
 
@@ -45,9 +40,10 @@ class ClientForm extends Form
     {
         return [
             'required' => 'O campo :attribute é obrigatório.',
-            'email'    => 'O campo :attribute deve ser um endereço válido.',
             'max'      => 'O campo :attribute não pode ter mais que :max caracteres.',
             'unique'   => 'Este :attribute já está em uso em nosso sistema.',
+            'date'     => 'O campo :attribute deve ser uma data válida.',
+            'exists'   => 'O :attribute selecionado é inválido.',
         ];
     }
 }

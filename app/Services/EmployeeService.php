@@ -8,6 +8,7 @@ use App\Models\Employee;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class EmployeeService implements EmployeeServiceInterface
 {
@@ -36,6 +37,8 @@ class EmployeeService implements EmployeeServiceInterface
             $employee = new Employee();
             $employee->user_id = $user->id;
             $employee->phone = $data['phone'];
+            $employee->hire_date = $data['hire_date'] ?? null;
+            $employee->user_id_created = Auth::id();
             $employee->saveWithLog();
 
             $employee->services()->sync($data['services']);
@@ -67,6 +70,8 @@ class EmployeeService implements EmployeeServiceInterface
             $data['phone'] = \App\Helpers\PhoneHelper::strip($data['phone']);
             // Update Employee
             $employee->phone = $data['phone'];
+            $employee->hire_date = $data['hire_date'] ?? null;
+            $employee->user_id_updated = Auth::id();
             $employee->saveWithLog();
 
             $employee->services()->sync($data['services']);

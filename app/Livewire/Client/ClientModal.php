@@ -34,8 +34,8 @@ class ClientModal extends BaseModal
             $this->entityId = $client->id;
             $this->form->fill([
                 'userId' => $client->user_id,
-                'name'   => $client->user->name ?? '',
-                'email'  => $client->user->email ?? '',
+                'birth_date' => $client->birth_date,
+                'notes' => $client->notes,
                 'phone'  => !empty($client->phone) ? \App\Helpers\PhoneHelper::format($client->phone) : '',
             ]);
             $this->isEditing = true;
