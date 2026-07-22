@@ -8,40 +8,32 @@ use Livewire\Form;
 
 class EmployeeForm extends Form
 {
-    public $name = '';
-    public $email = '';
     public $phone = '';
-    public $userId = null;
+    public $userId = '';
+    public $hire_date = '';
     public $services = [];
 
     protected function rules()
     {
         return [
-            'name' => [
-                'required',
-                'string',
-                'max:255',
-                Rule::unique('users', 'username')->ignore($this->userId),
-            ],
-            'email' => [
-                'required',
-                'email',
-                'max:255',
-                Rule::unique('users', 'email')->ignore($this->userId),
-            ],
             'phone' => 'required|string|max:20',
             'services' => 'array',
             'services.*' => 'exists:services,id',
+            'userId' => [
+                'required',
+                Rule::exists('users', 'id'),
+            ],
+            'hire_date' => 'nullable|date',
         ];
     }
 
     protected function validationAttributes()
     {
         return [
-            'name' => 'nome',
-            'email' => 'email',
             'phone' => 'telefone',
             'services' => 'serviços',
+            'userId' => 'usuário',
+            'hire_date' => 'data de contratação',
         ];
     }
 
@@ -49,10 +41,10 @@ class EmployeeForm extends Form
     {
         return [
             'required' => 'O campo :attribute é obrigatório.',
-            'email'    => 'O campo :attribute deve ser um endereço válido.',
             'max'      => 'O campo :attribute não pode ter mais que :max caracteres.',
             'unique'   => 'Este :attribute já está em uso em nosso sistema.',
             'exists'   => 'O :attribute selecionado é inválido.',
+            'date'     => 'O campo :attribute deve ser uma data válida.',
         ];
     }
 }

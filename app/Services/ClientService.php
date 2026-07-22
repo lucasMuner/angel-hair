@@ -32,6 +32,8 @@ class ClientService implements ClientServiceInterface
             // Create Client
             $client = new Client();
             $client->user_id = $user->id;
+            $client->birth_date = $data['birth_date'] ?? null;
+            $client->notes = $data['notes'] ?? null;
             $client->phone = $data['phone'];
             $client->saveWithLog();
 
@@ -62,6 +64,8 @@ class ClientService implements ClientServiceInterface
             $data['phone'] = \App\Helpers\PhoneHelper::strip($data['phone']);
             // Update Client
             $client->phone = $data['phone'];
+            $client->birth_date = $data['birth_date'] ?? null;
+            $client->notes = $data['notes'] ?? null;
             $client->saveWithLog();
 
             DB::commit();

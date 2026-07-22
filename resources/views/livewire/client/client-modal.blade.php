@@ -21,4 +21,24 @@
             wire:model="form.phone"
         />
     </div>
+
+    <div class="mb-4">
+        <x-ui.input-field
+            label="Aniversário"
+            type="date"
+            id="birth_date"
+            name="birth_date"
+            wire:model="form.birth_date"
+        />
+    </div>
+
+    <div class="mb-4">
+        <x-ui.input-field
+            label="Sobre"
+            id="notes"
+            name="notes"
+            placeholder="Informações adicionais sobre o cliente"
+            wire:model="form.notes"
+        />
+    </div>
 </x-layouts.modal-form>

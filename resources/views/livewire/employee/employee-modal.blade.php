@@ -31,4 +31,14 @@
             wireModel="form.services"
         />
     </div>
+
+    <div class="mb-4">
+        <x-ui.input-field
+            label="Data de Contratação"
+            type="date"
+            id="hire_date"
+            name="hire_date"
+            wire:model="form.hire_date"
+        />
+    </div>
 </x-layouts.modal-form>

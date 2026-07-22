@@ -41,8 +41,7 @@ class EmployeeModal extends BaseModal
             $this->entityId = $employee->id;
             $this->form->fill([
                 'userId' => $employee->user_id,
-                'name'   => $employee->user->name ?? '',
-                'email'  => $employee->user->email ?? '',
+                'hire_date' => $employee->hire_date,
                 'services' => $employee->services->pluck('id')->toArray(),
                 'phone'  => !empty($employee->phone) ? \App\Helpers\PhoneHelper::format($employee->phone) : '',
             ]);
