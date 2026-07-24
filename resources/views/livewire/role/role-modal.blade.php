@@ -18,4 +18,14 @@
             placeholder="Digite a descrição da função"
         />
     </div>
+
+    <div class="mb-4">
+        <x-ui.select-multiple-field
+            label="Módulos"
+            :options="$this->optionsModules"
+            id="modules"
+            name="modules"
+            wireModel="form.modules"
+        />
+    </div>
 </x-layouts.modal-form>

@@ -17,19 +17,17 @@
 
     {{-- Menu --}}
     <nav class="flex flex-col gap-2">
-        <x-ui.side-bar-item href="{{ route('home') }}" :active="$active" module="home" name="Início" icon="fa-solid fa-house"/>
-
-        <x-ui.side-bar-item href="{{ route('clients') }}" :active="$active" module="clients" name="Clientes" icon="fa-solid fa-users"/>
-
-        <x-ui.side-bar-item href="{{ route('employees') }}" :active="$active" module="employees" name="Funcionários" icon="fa-solid fa-briefcase"/>
-
-        <x-ui.side-bar-item href="{{ route('services') }}" :active="$active" module="services" name="Serviços" icon="fa-solid fa-scissors"/>
-
-        <x-ui.side-bar-item href="{{ route('appointments') }}" :active="$active" module="appointments" name="Agendamentos" icon="fa-solid fa-calendar-check"/>
-
-        <x-ui.side-bar-item href="{{ route('roles') }}" :active="$active" module="roles" name="Funções" icon="fa-solid fa-user-tag"/>
-
-        <x-ui.side-bar-item href="{{ route('users') }}" :active="$active" module="users" name="Usuários" icon="fa-solid fa-user-circle"/>
+        @foreach(auth()->user()->role->modules->sortBy('order') as $module)
+            @if($module->activated && $module->pivot->can_view)
+                <x-ui.side-bar-item
+                    href="{{ route($module->route_name) }}"
+                    :active="$active"
+                    module="{{ $module->slug }}"
+                    name="{{ $module->name }}"
+                    icon="{{ $module->icon }}"
+                />
+            @endif
+        @endforeach
     </nav>
 
     {{-- Footer da sidebar --}}

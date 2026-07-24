@@ -5,6 +5,7 @@ namespace App\Livewire\Role;
 use App\Models\Role;
 use App\Livewire\Role\Forms\RoleForm;
 use App\Contracts\RoleServiceInterface;
+use App\Contracts\ModuleServiceInterface;
 use Livewire\Attributes\{On, Computed};
 use App\Livewire\Base\BaseModal;
 
@@ -18,6 +19,12 @@ class RoleModal extends BaseModal
         parent::openModal();
     }
 
+    #[Computed]
+    public function optionsModules()
+    {
+        return app(ModuleServiceInterface::class)->all()->pluck('name', 'id')->toArray();
+    }
+
     #[On('edit-role')]
     public function editRole($id, RoleServiceInterface $service)
     {
@@ -27,10 +34,13 @@ class RoleModal extends BaseModal
                 'id' => $role->id,
                 'name' => $role->name,
                 'description' => $role->description,
+                'modules' => $role->modules->pluck('id')->toArray(),
             ]);
 
             $this->isEditing = true;
             $this->showModal = true;
+
+            $this->dispatchSelect2SetValues('modules', $role->modules->pluck('id')->toArray());
         }
     }
 

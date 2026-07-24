@@ -9,6 +9,7 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class RoleService implements RoleServiceInterface
 {
@@ -25,6 +26,8 @@ class RoleService implements RoleServiceInterface
             $role->name = strtolower($data["name"]);
             $role->description = $data["description"];
             $role->saveWithLog();
+
+            $role->modules()->sync($this->buildModulesSyncData($data['modules']));
 
             DB::commit();
 
@@ -57,6 +60,8 @@ class RoleService implements RoleServiceInterface
             $role->name = strtolower($data["name"]);
             $role->description = $data["description"];
             $role->saveWithLog();
+
+            $role->modules()->sync($this->buildModulesSyncData($data['modules']));
 
             DB::commit();
 
@@ -115,5 +120,21 @@ class RoleService implements RoleServiceInterface
     public function all()
     {
         return Role::all();
+    }
+
+    private function buildModulesSyncData(array $moduleIds): array
+    {
+        $userId = Auth::id();
+
+        return collect($moduleIds)->mapWithKeys(fn ($moduleId) => [
+            $moduleId => [
+                'can_view'         => true,
+                'can_create'       => true,
+                'can_edit'         => true,
+                'can_delete'       => true,
+                'user_id_created'  => $userId,
+                'user_id_updated'  => $userId,
+            ],
+        ])->toArray();
     }
 }

@@ -10,6 +10,7 @@ class RoleForm extends Form
 {
     public $name = '';
     public $description = '';
+    public $modules = [];
     public $id = null;
 
     protected function rules()
@@ -17,6 +18,7 @@ class RoleForm extends Form
         return [
           'name'=> ['required', Rule::unique('roles', 'name')->ignore($this->id)],
           'description'=> ['required'],
+          'modules'=> ['required', 'array'],
         ];
     }
 
@@ -25,6 +27,7 @@ class RoleForm extends Form
         return [
             'name' => 'nome',
             'description' => 'descrição',
+            'modules' => 'módulos',
         ];
     }
 
@@ -33,6 +36,7 @@ class RoleForm extends Form
         return [
             'required' => 'O campo :attribute é obrigatório.',
             'unique' => 'O campo :attribute já está em uso.',
+            'array' => 'O campo :attribute deve ser um array.',
         ];
     }
 }
