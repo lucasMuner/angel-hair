@@ -19,6 +19,12 @@ class UsersList extends Component
         $this->resetPage();
     }
 
+    #[On('request-export')]
+    public function requestExport()
+    {
+        $this->dispatch('export-users', search: $this->search);
+    }
+
     public function render()
     {
         return view('livewire.user.users-list', [

@@ -7,6 +7,8 @@ use App\Livewire\User\Forms\UserForm;
 use App\Contracts\UserServiceInterface;
 use Livewire\Attributes\{On,Computed};
 use App\Contracts\RoleServiceInterface;
+use App\Exports\UsersExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class UserModal extends BaseModal
 {
@@ -24,6 +26,15 @@ class UserModal extends BaseModal
         parent::openModal();
 
         $this->dispatch('select2-set-values', id: 'role_id', values: '');
+    }
+
+    #[On('export-users')]
+    public function export(?string $search = null)
+    {
+        return Excel::download(
+            new UsersExport(['search' => $search]),
+            'usuarios.xlsx'
+        );
     }
 
     #[On('edit-user')]

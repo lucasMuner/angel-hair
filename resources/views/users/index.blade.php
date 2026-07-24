@@ -5,7 +5,7 @@
     <div class="mx-4 mb-8 flex items-center justify-end gap-3">
         <button type="button"
             x-data
-            x-on:click="$dispatch('open-service-modal')"
+            x-on:click="$dispatch('request-export')"
             class="font-bold cursor-pointer bg-noir-deep border border-gold-soft text-white px-4 py-2 rounded-md hover:bg-noir-muted transition">
             <i class="fa-solid fa-file-export"></i> Exportar
         </button>
