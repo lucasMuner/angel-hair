@@ -31,7 +31,7 @@ class EmployeeModal extends BaseModal
     #[Computed]
     public function optionsUsers()
     {
-        return app(UserServiceInterface::class)->all()->pluck('name', 'id')->toArray();
+        return app(UserServiceInterface::class)->all()->pluck('module_name AS name', 'id')->toArray();
     }
 
     #[On('edit-employee')]

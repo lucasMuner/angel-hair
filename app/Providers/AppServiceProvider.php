@@ -13,6 +13,7 @@ use App\Contracts\ServiceServiceInterface;
 use App\Contracts\AppointmentServiceInterface;
 use App\Contracts\UserServiceInterface;
 use App\Contracts\RoleServiceInterface;
+use App\Contracts\ModuleServiceInterface;
 
 use Illuminate\Support\Facades\View;
 
@@ -23,6 +24,7 @@ use App\Services\ServiceService;
 use App\Services\AppointmentService;
 use App\Services\UserService;
 use App\Services\RoleService;
+use App\Services\ModuleService;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -37,6 +39,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ServiceServiceInterface::class, ServiceService::class);
         $this->app->bind(AppointmentServiceInterface::class, AppointmentService::class);
         $this->app->bind(RoleServiceInterface::class, RoleService::class);
+        $this->app->bind(ModuleServiceInterface::class, ModuleService::class);
     }
 
     /**
