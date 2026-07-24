@@ -1,4 +1,4 @@
-<x-layouts.main-layout title="Funções" active="roles">
+<x-layouts.main-layout title="Funções" active="role">
 
    <h4 class="text-4xl font-bold font-bodoni text-goldenrod mt-4 ml-4">Funções</h4>
 
