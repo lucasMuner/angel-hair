@@ -1,4 +1,4 @@
-<x-layouts.main-layout title="Funcionários" active="employees">
+<x-layouts.main-layout title="Funcionários" active="employee">
 
    <h4 class="text-4xl font-bold font-bodoni text-goldenrod mt-4 ml-4">Funcionários</h4>
 

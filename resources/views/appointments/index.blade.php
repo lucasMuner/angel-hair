@@ -1,4 +1,4 @@
-<x-layouts.main-layout title="Agendamentos" active="appointments">
+<x-layouts.main-layout title="Agendamentos" active="appointment">
 
    <h4 class="text-4xl font-bold font-bodoni text-goldenrod mt-4 ml-4">Agendamentos</h4>
 
