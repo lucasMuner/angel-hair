@@ -1,6 +1,6 @@
 <x-layouts.main-layout title="Login">
 
-    <div class="min-h-screen flex items-center justify-center relative bg-noir-deep overflow-hidden">
+    <div class="min-h-screen flex items-center justify-center relative bg-noir-deep overflow-y-auto px-4 py-10">
 
         <x-ui.corner-deco />
 

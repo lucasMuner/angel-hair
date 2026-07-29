@@ -29,11 +29,7 @@
 						<td class="px-5 py-3 text-champagne">{{ $user->name }}</td>
 						<td class="px-5 py-3 text-muted">{{ $user->email }}</td>
 						<td class="px-5 py-3">
-							@if(method_exists($user, 'getRoleNames'))
-								<span class="text-goldenrod">{{ $user->getRoleNames()->join(', ') }}</span>
-							@else
-								<span class="text-muted">-</span>
-							@endif
+							<span class="text-goldenrod">{{ !empty($user->role) ? $user->role->description : '-' }}</span>
 						</td>
 						<td class="px-5 py-3 text-muted">
 							{{ $user->created_at ? $user->created_at->format('d/m/Y') : '-' }}

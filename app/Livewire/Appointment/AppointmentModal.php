@@ -114,14 +114,17 @@ class AppointmentModal extends BaseModal
         }
     }
 
-    public function delete(AppointmentServiceInterface $service)
+    #[On('delete-appointment')]
+    public function delete(AppointmentServiceInterface $service, $id = null)
     {
         try {
-            if (!$this->isEditing || !$this->entityId) {
+            $id = $id ?? ($this->isEditing ? $this->entityId : null);
+
+            if (!$id) {
                 throw new \Exception('Agendamento não encontrado.');
             }
 
-            $service->delete($this->entityId);
+            $service->delete($id);
             $this->notify('Agendamento deletado com sucesso!', 'refreshAppointmentsList');
 
         } catch (\Exception $e) {

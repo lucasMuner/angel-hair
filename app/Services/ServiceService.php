@@ -5,6 +5,8 @@ namespace App\Services;
 use App\Models\Service;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\UploadedFile;
 use App\Contracts\ServiceServiceInterface;
 
 class ServiceService implements ServiceServiceInterface
@@ -13,7 +15,7 @@ class ServiceService implements ServiceServiceInterface
     /**
      * Create new service
      */
-    public function store(array $data): Service
+    public function store(array $data, ?UploadedFile $image = null): Service
     {
         DB::beginTransaction();
         try {
@@ -23,6 +25,11 @@ class ServiceService implements ServiceServiceInterface
             $service->description = $data['description'];
             $service->price = $data['price'];
             $service->duration = $data['duration'];
+
+            if ($image) {
+                $service->image = $image->store('services', 'public');
+            }
+
             $service->saveWithLog();
 
             DB::commit();
@@ -42,7 +49,7 @@ class ServiceService implements ServiceServiceInterface
     /**
      * Update client
      */
-    public function update(int $serviceId, array $data): Service
+    public function update(int $serviceId, array $data, ?UploadedFile $image = null): Service
     {
         DB::beginTransaction();
         try {
@@ -53,6 +60,14 @@ class ServiceService implements ServiceServiceInterface
             $service->description = $data['description'];
             $service->price = $data['price'];
             $service->duration = $data['duration'];
+
+            if ($image) {
+                if ($service->image) {
+                    Storage::disk('public')->delete($service->image);
+                }
+                $service->image = $image->store('services', 'public');
+            }
+
             $service->saveWithLog();
 
             DB::commit();
@@ -78,16 +93,13 @@ class ServiceService implements ServiceServiceInterface
         DB::beginTransaction();
         try {
             $service = Service::findOrFail($serviceId);
-            $user = $service->user;
+
+            if ($service->image) {
+                Storage::disk('public')->delete($service->image);
+            }
 
             // Delete Service
             $service->deleteWithLog();
-
-            // Delete User
-            if ($user) {
-                $user->delete();
-            }
-
             DB::commit();
             return true;
 

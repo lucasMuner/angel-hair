@@ -9,5 +9,6 @@ interface AppointmentServiceInterface
     public function delete(int $id): bool;
     public function find(int $id);
     public function all();
+    public function allByClient(int $clientId);
     public function getAvailableTimes(int $employeeId, int $serviceId, string $date, ?int $excludeId = null): array;
 }

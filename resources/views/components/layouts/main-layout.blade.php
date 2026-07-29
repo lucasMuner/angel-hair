@@ -3,8 +3,7 @@
     <x-layouts.partials.head :title="$title ?? ''" />
 
     <body class="bg-noir-deep flex overflow-hidden"
-        x-data="{ sidebarOpen: window.innerWidth >= 1024 }"
-        @resize.window="if (window.innerWidth >= 1024) sidebarOpen = true"
+        x-data="{ sidebarOpen: false }"
     >
 
         @unless(Request::is('/')  || Request::is('register') || Request::is('email/verify'))

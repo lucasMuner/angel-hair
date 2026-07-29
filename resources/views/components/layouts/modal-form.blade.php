@@ -10,7 +10,7 @@
         x-transition:leave="transition ease-in duration-200"
         x-transition:leave-start="opacity-100"
         x-transition:leave-end="opacity-0"
-        class="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+        class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 overflow-y-auto p-4"
         style="display: none;"
     >
         <div
@@ -21,11 +21,11 @@
             x-transition:leave="transition ease-in duration-200"
             x-transition:leave-start="opacity-100 translate-y-0"
             x-transition:leave-end="opacity-0 translate-y-8"
-            class="rounded-lg w-full {{ $modalWidth ?? 'max-w-md' }} p-6 bg-noir-deep border border-goldenrod"
+            class="rounded-lg w-full {{ $modalWidth ?? 'max-w-md' }} p-6 bg-noir-deep border border-goldenrod max-h-[90vh] overflow-y-auto my-8"
         >
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-xl font-bold text-goldenrod font-bodoni">{{ $isEditing ? 'Editar' : 'Adicionar' }} {{ $modalTitle }}</h3>
-                <button @click="$wire.closeModal()" class="cursor-pointer text-champagne-sm hover:text-champagne transition"
+                <button @click="$wire.closeModal()" class="cursor-pointer text-champagne-sm hover:text-champagne transition">
                     <i class="fa-solid fa-times text-xl"></i>
                 </button>
             </div>

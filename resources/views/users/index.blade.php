@@ -2,7 +2,7 @@
 
    <h4 class="text-4xl font-bold font-bodoni text-goldenrod mt-4 ml-4">Usuários</h4>
 
-    <div class="mx-4 mb-8 flex items-center justify-end gap-3">
+    <div class="mx-4 mb-8 flex items-center justify-end gap-3 mt-4">
         <button type="button"
             x-data
             x-on:click="$dispatch('request-export')"
