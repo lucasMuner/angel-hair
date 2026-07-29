@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use \App\Livewire\Booking\ClientBookingWizard;
 
 Route::middleware('guest')->group(function () {
     Route::get('/', [MainController::class, 'index'])->name('login');
@@ -20,6 +21,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/employees', [MainController::class, 'employees'])->name('employees');
     Route::get('/services', [MainController::class, 'services'])->name('services');
     Route::get('/users', [MainController::class, 'users'])->name('users');
+    Route::get('/appointments-booking-wizard', ClientBookingWizard::class)->name('booking.wizard');
 });
 
 Route::middleware('auth')->group(function () {

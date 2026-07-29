@@ -13,6 +13,8 @@ class ServiceForm extends Form
     public $description = '';
     public $price = '';
     public $duration = '';
+    public $image = null;
+    public ?string $currentImage = null;
 
     // Regras dinâmicas
     protected function rules()
@@ -26,6 +28,7 @@ class ServiceForm extends Form
             'description' => 'required|max:255',
             'price' => 'required|numeric|min:0',
             'duration' => 'required|integer|min:30',
+            'image' => 'nullable|image|max:2048',
         ];
     }
 
@@ -36,6 +39,7 @@ class ServiceForm extends Form
             'description' => 'descrição',
             'price' => 'preço',
             'duration' => 'duração',
+            'image'=> 'imagem',
         ];
     }
 
@@ -47,6 +51,7 @@ class ServiceForm extends Form
             'min' => 'O :attribute deve ser um valor positivo.',
             'unique' => 'Este :attribute já está cadastrado.',
             'max' => 'O :attribute deve ter no máximo :max caracteres.',
+            'image' => 'O :attribute deve ser uma imagem válida.',
         ];
     }
 }

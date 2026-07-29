@@ -25,30 +25,18 @@
     {{-- Visão Geral --}}
     <div class="min-h-[500px] flex flex-col w-full font-bodoni bg-noir-deep p-8">
 
-        <h2 class="text-3xl font-bold text-goldenrod text-center mb-8">Visão Geral</h2>
+        <livewire:service.service-carousel />
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
-            <div class="rounded-xl hover:-translate-y-2 transition-all p-6 text-center bg-noir-card border border-gold-soft hover:border-goldenrod">
-                <i class="fa-solid fa-calendar-check text-3xl text-goldenrod mb-3"></i>
-                <p class="text-4xl font-bold text-goldenrod">8</p>
-                <p class="text-muted text-sm mt-1">Agendamentos Hoje</p>
-            </div>
-            <div class="rounded-xl hover:-translate-y-2 transition-all p-6 text-center bg-noir-card border border-gold-soft hover:border-goldenrod">
-                <i class="fa-solid fa-users text-3xl text-goldenrod mb-3"></i>
-                <p class="text-4xl font-bold text-goldenrod">3</p>
-                <p class="text-muted text-sm mt-1">Clientes Atendidos</p>
-            </div>
-            <div class="rounded-xl hover:-translate-y-2 transition-all p-6 text-center bg-noir-card border border-gold-soft hover:border-goldenrod">
-                <i class="fa-solid fa-clock text-3xl text-goldenrod mb-3"></i>
-                <p class="text-4xl font-bold text-goldenrod">5</p>
-                <p class="text-muted text-sm mt-1">Horários Disponíveis</p>
-            </div>
+        {{-- Fios ao vento — transição entre Hero e Visão Geral --}}
+        <div class="w-full bg-noir-deep">
+            <x-ui.hair-wind :height="300" :strands="100" :wind="1" :speed="0.8" />
         </div>
+
 
         {{-- Acesso Rápido --}}
         <h2 class="text-3xl font-bold text-goldenrod text-center mb-6 mt-4">Acesso Rápido</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
-            <a href="#" class="rounded-xl hover:-translate-y-2 transition-all p-6 flex items-center gap-4 bg-noir-card border border-gold-soft hover:border-goldenrod">
+            <a href="{{ route('booking.wizard') }}" class="rounded-xl hover:-translate-y-2 transition-all p-6 flex items-center gap-4 bg-noir-card border border-gold-soft hover:border-goldenrod">
                 <i class="fa-solid fa-calendar-plus text-3xl text-goldenrod"></i>
                 <div>
                     <p class="text-goldenrod font-bold text-lg">Novo Agendamento</p>
@@ -63,10 +51,10 @@
                 </div>
             </a>
             <a href="#" class="rounded-xl hover:-translate-y-2 transition-all p-6 flex items-center gap-4 bg-noir-card border border-gold-soft hover:border-goldenrod">
-                <i class="fa-solid fa-scissors text-3xl text-goldenrod"></i>
+                <i class="fa-solid fa-user text-3xl text-goldenrod"></i>
                 <div>
-                    <p class="text-goldenrod font-bold text-lg">Serviços</p>
-                    <p class="text-muted text-sm">Gerencie seus serviços</p>
+                    <p class="text-goldenrod font-bold text-lg">Perfil</p>
+                    <p class="text-muted text-sm">Acesse suas informações</p>
                 </div>
             </a>
         </div>

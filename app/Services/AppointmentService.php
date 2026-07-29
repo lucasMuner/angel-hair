@@ -131,6 +131,16 @@ class AppointmentService implements AppointmentServiceInterface
         return Appointment::latest()->get();
     }
 
+    public function allByClient(int $clientId)
+    {
+        return Appointment::where('client_id', $clientId)
+            ->with(['employee.user', 'client.user'])
+            ->orderBy('date', 'desc')
+            ->orderBy('start_time')
+            ->take(8)
+            ->get();
+    }
+
     public function getAvailableTimes(int $employeeId, int $serviceId, string $date, ?int $excludeId = null): array
     {
         $appointment = new Appointment();

@@ -5,10 +5,13 @@ namespace App\Livewire\Service;
 use App\Livewire\Service\Forms\ServiceForm;
 use App\Contracts\ServiceServiceInterface;
 use Livewire\Attributes\{Computed, On};
+use Livewire\WithFileUploads;
 use App\Livewire\Base\BaseModal;
 
 class ServiceModal extends BaseModal
 {
+    use WithFileUploads;
+
     public ServiceForm $form;
 
     #[On('open-service-modal')]
@@ -34,11 +37,12 @@ class ServiceModal extends BaseModal
         if ($found = $service->find($id)) {
             $this->entityId = $found->id;
             $this->form->fill([
-                'serviceId'   => $found->id,
-                'name'        => $found->name,
-                'description' => $found->description,
-                'price'       => $found->price,
-                'duration'    => $found->duration
+                'serviceId'    => $found->id,
+                'name'         => $found->name,
+                'description'  => $found->description,
+                'price'        => $found->price,
+                'duration'     => $found->duration,
+                'currentImage' => $found->image,
             ]);
             $this->isEditing = true;
             $this->showModal = true;
@@ -50,11 +54,15 @@ class ServiceModal extends BaseModal
         try {
             $validatedData = $this->form->validate();
 
+            // A imagem vem separada, não faz parte do array validado pro model
+            $image = $this->form->image;
+            unset($validatedData['image']);
+
             if ($this->isEditing) {
-                $service->update($this->entityId, $validatedData);
+                $service->update($this->entityId, $validatedData, $image);
                 $message = 'Serviço atualizado com sucesso!';
             } else {
-                $service->store($validatedData);
+                $service->store($validatedData, $image);
                 $message = 'Serviço criado com sucesso!';
             }
 

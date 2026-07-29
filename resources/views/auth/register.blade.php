@@ -1,10 +1,10 @@
 <x-layouts.main-layout title="Register">
 
-    <div class="min-h-screen flex items-center justify-center relative bg-noir-deep overflow-hidden">
+    <div class="min-h-screen flex items-start sm:items-center justify-center relative bg-noir-deep overflow-y-auto px-4 py-10">
 
         <x-ui.corner-deco />
 
-        <div class="bg-noir-surface rounded-2xl border-2 border-goldenrod w-full max-w-md p-8 relative z-20 shadow-[0_8px_32px_rgba(0,0,0,0.8)]">
+        <div class="bg-noir-surface rounded-2xl border-2 border-goldenrod w-full max-w-md p-6 sm:p-8 relative z-20 shadow-[0_8px_32px_rgba(0,0,0,0.8)]">
 
             {{-- Divisor --}}
             <div class="flex items-center justify-center gap-3 mb-6">
