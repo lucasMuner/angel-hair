@@ -5,25 +5,32 @@ namespace App\Livewire\Employee;
 use Livewire\Component;
 use Livewire\Attributes\On;
 use App\Contracts\EmployeeServiceInterface;
+use Livewire\WithPagination;
 
 class EmployeesList extends Component
 {
-    public $employees = [];
+    use WithPagination;
+    public $search = '';
 
-    public function mount()
+
+    #[On('search-employees')]
+    public function updateSearch($search)
     {
-        $this->loadEmployees();
+        $this->search = $search;
+        $this->resetPage();
     }
 
     #[On('refreshEmployeesList')]
-    public function loadEmployees()
+    public function updatingSearch()
     {
-        $this->employees = app(EmployeeServiceInterface::class)->all();
+        $this->resetPage();
     }
 
     public function render()
     {
-        return view('livewire.employee.employees-list');
+        return view('livewire.employee.employees-list', [
+            'employees' => app(EmployeeServiceInterface::class)->all($this->search, 15),
+        ]);
     }
 }
 

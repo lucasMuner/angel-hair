@@ -116,17 +116,22 @@ class UserService implements UserServiceInterface
     /**
      * List all users with their associated data
      */
-    public function all(?string $search = null, int $perPage = 15)
+    public function all(?string $search = null, ?int $perPage = null)
     {
-        return User::query()
+        $query = User::query()
             ->when($search, function ($query, $search) {
                 $query->where(function ($q) use ($search) {
                     $q->where('name', 'like', "%{$search}%")
                     ->orWhere('email', 'like', "%{$search}%");
                 });
             })
-            ->orderBy('name')
-            ->paginate($perPage);
+            ->orderBy('name');
+
+        if($perPage !== null) {
+            return $query->paginate($perPage);
+        }
+
+        return $query->get();
     }
 
     public function setUserRole(int $userId, string $roleName): User

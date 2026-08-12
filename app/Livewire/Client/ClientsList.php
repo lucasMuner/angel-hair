@@ -5,25 +5,31 @@ namespace App\Livewire\Client;
 use App\Contracts\ClientServiceInterface;
 use Livewire\Component;
 use Livewire\Attributes\On;
+use Livewire\WithPagination;
 
 class ClientsList extends Component
 {
-    public $clients = [];
+    use WithPagination;
+    public $search = '';
 
-    public function mount()
+    #[On('search-clients')]
+    public function updateSearch($search)
     {
-        $this->loadClients();
+        $this->search = $search;
+        $this->resetPage();
     }
 
     #[On('refreshClientsList')]
-    public function loadClients()
+    public function updatingSearch()
     {
-        $this->clients = app(ClientServiceInterface::class)->all();
+        $this->resetPage();
     }
 
     public function render()
     {
-        return view('livewire.client.clients-list');
+        return view('livewire.client.clients-list', [
+            'clients' => app(ClientServiceInterface::class)->all($this->search, 15),
+        ]);
     }
 }
 

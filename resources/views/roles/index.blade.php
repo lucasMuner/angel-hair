@@ -7,7 +7,16 @@
    </div>
 
     {{-- Adicionar botão com livewire --}}
-   <div class="mx-4 mb-8 flex items-center justify-end">
+   <div class="mx-4 mb-8 flex items-center justify-between">
+        <div class="mx-4 w-1/2" x-data="{ search: '' }">
+            <input
+                type="text"
+                x-model="search"
+                x-on:input.debounce.400ms="$dispatch('search-roles', { search: $event.target.value })"
+                placeholder="Buscar função..."
+                class="w-full px-4 py-2 rounded-lg bg-noir-card border border-gold-soft text-champagne focus:border-goldenrod outline-none"
+            >
+        </div>
         <button type="button"
             x-data
             x-on:click="$dispatch('open-role-modal')"

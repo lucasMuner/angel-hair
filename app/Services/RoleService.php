@@ -117,9 +117,19 @@ class RoleService implements RoleServiceInterface
     /**
      * List all roles with their associated user data
      */
-    public function all()
+    public function all(?string $search = null, ?int $perPage = null)
     {
-        return Role::all();
+        $query = Role::latest()
+            ->when($search, function ($query) use ($search) {
+                $query->where('name', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%");
+            });
+
+        if($perPage !== null) {
+            return $query->paginate($perPage);
+        }
+
+        return $query->get();
     }
 
     private function buildModulesSyncData(array $moduleIds): array

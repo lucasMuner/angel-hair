@@ -126,9 +126,27 @@ class AppointmentService implements AppointmentServiceInterface
     /**
      * List all appointments
      */
-    public function all()
+    public function all(?string $search = null, ?int $perPage = null)
     {
-        return Appointment::latest()->get();
+        $query = Appointment::latest()
+            ->when($search, function ($query) use ($search) {
+                $query->whereHas('employee.user', function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%");
+                })
+                ->orWhereHas('client.user', function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%");
+                })
+                ->orWhereHas('service', function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%");
+                });
+            })
+            ->with(['employee.user', 'client.user', 'service']);
+
+        if($perPage !== null) {
+            return $query->paginate($perPage);
+        }
+
+        return $query->get();
     }
 
     public function allByClient(int $clientId)
