@@ -125,9 +125,21 @@ class ClientService implements ClientServiceInterface
     /**
      * List all clients with their associated user data
      */
-    public function all()
+    public function all(?string $search = null, ?int $perPage = null)
     {
-        return Client::with('user')->latest()->get();
+        $query = Client::with('user')->latest()
+            ->when($search, function ($query) use ($search) {
+                $query->whereHas('user', function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%");
+                });
+            });
+
+        if($perPage !== null) {
+            return $query->paginate($perPage);
+        }
+
+        return $query->get();
     }
 
     /**

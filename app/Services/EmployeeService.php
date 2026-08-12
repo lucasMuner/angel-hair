@@ -134,9 +134,21 @@ class EmployeeService implements EmployeeServiceInterface
     /**
      * List all employees with their associated user data
      */
-    public function all()
+    public function all(?string $search = null, ?int $perPage = null)
     {
-        return Employee::with('user')->latest()->get();
+        $query = Employee::with('user')->latest()
+            ->when($search, function ($query) use ($search) {
+                $query->whereHas('user', function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%");
+                });
+            });
+
+        if($perPage !== null) {
+            return $query->paginate($perPage);
+        }
+
+        return $query->get();
     }
 
     /**

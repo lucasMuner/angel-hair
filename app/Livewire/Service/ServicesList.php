@@ -5,25 +5,31 @@ namespace App\Livewire\Service;
 use Livewire\Component;
 use Livewire\Attributes\On;
 use App\Contracts\ServiceServiceInterface;
+use Livewire\WithPagination;
 
 class ServicesList extends Component
 {
-    public $services = [];
+    use WithPagination;
+    public $search = '';
 
-    public function mount()
+    #[On('search-services')]
+    public function updateSearch($search)
     {
-        $this->loadServices();
+        $this->search = $search;
+        $this->resetPage();
     }
 
     #[On('refreshServicesList')]
-    public function loadServices()
+    public function updatingSearch()
     {
-        $this->services = app(ServiceServiceInterface::class)->all();
+        $this->resetPage();
     }
 
     public function render()
     {
-        return view('livewire.service.services-list');
+        return view('livewire.service.services-list', [
+            'services' => app(ServiceServiceInterface::class)->all($this->search, 15),
+        ]);
     }
 }
 

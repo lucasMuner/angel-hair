@@ -16,7 +16,7 @@
     </div>
 
     {{-- Menu --}}
-    <nav class="flex flex-col gap-2">
+    <nav class="flex flex-col gap-2 overflow-y-auto">
         @foreach(auth()->user()->role->modules->sortBy('order') as $module)
             @if($module->activated && $module->pivot->can_view)
                 <x-ui.side-bar-item

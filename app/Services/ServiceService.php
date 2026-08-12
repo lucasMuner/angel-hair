@@ -124,8 +124,18 @@ class ServiceService implements ServiceServiceInterface
     /**
      * List all services with their associated user data
      */
-    public function all()
+    public function all(?string $search = null, ?int $perPage = null)
     {
-        return Service::latest()->get();
+        $query = Service::latest()
+            ->when($search, function ($query) use ($search) {
+                $query->where('name', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%");
+            });
+
+        if($perPage !== null) {
+            return $query->paginate($perPage);
+        }
+
+        return $query->get();
     }
 }

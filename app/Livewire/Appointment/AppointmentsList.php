@@ -4,38 +4,32 @@ namespace App\Livewire\Appointment;
 
 use App\Contracts\AppointmentServiceInterface;
 use Livewire\Component;
+use Livewire\WithPagination;
 use Livewire\Attributes\On;
-use Illuminate\Support\Facades\Auth;
-use App\Models\Client;
 
 class AppointmentsList extends Component
 {
-    public $appointments = [];
+    use WithPagination;
+    public $search = '';
 
-    public function mount()
+    #[On('search-appointments')]
+    public function updateSearch($search)
     {
-        $this->loadAppointments();
+        $this->search = $search;
+        $this->resetPage();
     }
 
     #[On('refreshAppointmentsList')]
-    public function loadAppointments()
+    public function updatingSearch()
     {
-       $user = Auth::user();
-
-        if ($user->role->name === 'client') {
-            $client = Client::where('user_id', $user->id)->first();
-
-            $this->appointments = $client
-                ? app(AppointmentServiceInterface::class)->allByClient($client->id)
-                : collect();
-        } else {
-            $this->appointments = app(AppointmentServiceInterface::class)->all();
-        }
+        $this->resetPage();
     }
 
     public function render()
     {
-        return view('livewire.appointment.appointments-list');
+        return view('livewire.appointment.appointments-list', [
+            'appointments' => app(AppointmentServiceInterface::class)->all($this->search, 15),
+        ]);
     }
 }
 

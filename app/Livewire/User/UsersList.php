@@ -28,7 +28,7 @@ class UsersList extends Component
     public function render()
     {
         return view('livewire.user.users-list', [
-            'users' => app(UserServiceInterface::class)->all($this->search),
+            'users' => app(UserServiceInterface::class)->all($this->search, 15),
         ]);
     }
 }
